@@ -6,6 +6,8 @@ import com.unfu.project.security.AuthenticationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/api")
 public class AuthenticationController {
@@ -17,7 +19,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/social/signin/google")
-    public ResponseEntity signIn(@RequestBody AuthRequest request) {
+    public ResponseEntity signIn(@RequestBody AuthRequest request) throws IOException {
 
         AuthResponse response = authenticationService.authorizeOrRegister(request);
         return ResponseEntity.ok(response);
