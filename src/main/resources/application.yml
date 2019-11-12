@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/Project?createDatabaseIfNotExist=true&useSSL=false&autoReconnect=true&useLegacyDatetimeCode=false&serverTimezone=UTC&useUnicode=yes&characterEncoding=UTF-8
+    username: root
+    password: STRONGpwd1$
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+
+  social:
+    google:
+      clientId: 217658242103-pv74qrnmoku2aqhtgre77kutpfuk1sqe.apps.googleusercontent.com
+      clientSecret: aNTs-K0fYvd72CyyjzTc21_u
+
+logging:
+  level:
+    root: warn
+    com.unfu.project: debug
+
+jwt:
+  secret: tXmwC4o6aOoHUaKhZjuhxTb20p2abQaX
+  expirationInMs: 900000
