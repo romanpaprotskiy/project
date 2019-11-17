@@ -17,11 +17,11 @@ public class Authority implements GrantedAuthority, Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "authority")
+    private String authority;
 
     @Override
     public String getAuthority() {
-        return name;
+        return authority;
     }
 }

@@ -18,5 +18,5 @@ public class AuthResponse implements Serializable {
 
     private Date expiryDate;
 
-    private String email;//TODO chenged to student or teacher
+    private UserResponse user;
 }

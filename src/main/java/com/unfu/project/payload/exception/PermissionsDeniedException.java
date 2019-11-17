@@ -1,4 +1,4 @@
-package com.unfu.project.exception;
+package com.unfu.project.payload.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
