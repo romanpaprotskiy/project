@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 @Data
 @Builder
@@ -18,5 +19,5 @@ public class AuthResponse implements Serializable {
 
     private Date expiryDate;
 
-    private UserResponse user;
+    private Set<AuthorityResponse> authorities;
 }

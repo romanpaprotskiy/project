@@ -1,5 +1,6 @@
 package com.unfu.project.entity;
 
+import com.unfu.project.entity.constants.Role;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.security.core.GrantedAuthority;
@@ -8,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -37,13 +39,23 @@ public class User implements Serializable, UserDetails {
     private String userId;
 
     @Column(name = "active")
-    private boolean active;
+    private Boolean active;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_authority", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "authority_id"))
     @EqualsAndHashCode.Exclude
-    private Set<Authority> authorities;
+    private Set<Authority> authorities = new HashSet<>();
+
+    public void addAuthority(Role role) {
+        Authority authority = Authority.fromRole(role);
+        authorities.add(authority);
+    }
+
+    public void addAuthority(Authority authority) {
+        if (authority != null)
+            authorities.add(authority);
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

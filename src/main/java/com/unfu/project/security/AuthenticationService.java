@@ -9,17 +9,20 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.oauth2.Oauth2;
 import com.google.api.services.oauth2.model.Userinfoplus;
 import com.unfu.project.config.GoogleSecrets;
+import com.unfu.project.entity.Authority;
 import com.unfu.project.entity.User;
+import com.unfu.project.entity.constants.Role;
+import com.unfu.project.payload.exception.PermissionsDeniedException;
 import com.unfu.project.payload.request.AuthRequest;
 import com.unfu.project.payload.response.AuthResponse;
+import com.unfu.project.repository.AuthorityRepository;
 import com.unfu.project.repository.UserRepository;
-import com.unfu.project.service.mapper.UserMapper;
+import com.unfu.project.service.mapper.AuthorityMapper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.security.GeneralSecurityException;
 
 @Service
 public class AuthenticationService {
@@ -29,18 +32,22 @@ public class AuthenticationService {
 
     private final UserRepository userRepository;
 
-    private final UserMapper userMapper;
-
     private final AuthorizationCodeFlow codeFlow;
 
     private final GoogleSecrets googleSecrets;
 
-    public AuthenticationService(JwtTokenProvider jwtTokenProvider, UserRepository userRepository, UserMapper userMapper, AuthorizationCodeFlow codeFlow, GoogleSecrets googleSecrets) {
+    private final AuthorityRepository authorityRepository;
+
+    private final AuthorityMapper authorityMapper;
+
+    public AuthenticationService(JwtTokenProvider jwtTokenProvider, UserRepository userRepository,
+                                 AuthorizationCodeFlow codeFlow, GoogleSecrets googleSecrets, AuthorityRepository authorityRepository, AuthorityMapper authorityMapper) {
         this.jwtTokenProvider = jwtTokenProvider;
         this.userRepository = userRepository;
-        this.userMapper = userMapper;
         this.codeFlow = codeFlow;
         this.googleSecrets = googleSecrets;
+        this.authorityRepository = authorityRepository;
+        this.authorityMapper = authorityMapper;
     }
 
 
@@ -81,17 +88,20 @@ public class AuthenticationService {
         return AuthResponse.builder()
                 .accessToken(jwt.getToken())
                 .expiryDate(jwt.getExpiryDate())
-                .user(userMapper.map(user))
+                .authorities(authorityMapper.map(user.getAuthorities()))
                 .build();
     }
 
     private User createUser(Userinfoplus profile) {
         User user = new User();
-        user.setFirstName(profile.getFamilyName());
-        user.setLastName(profile.getGivenName());
+        user.setFirstName(profile.getGivenName());
+        user.setLastName(profile.getFamilyName());
         user.setActive(true);
         user.setEmail(profile.getEmail());
-        user.setUserId(profile.getId());//TODO define authorities
+        user.setUserId(profile.getId());
+        Authority authority = authorityRepository.findByAuthority(Role.GUEST)
+                .orElseThrow(PermissionsDeniedException::new);
+        user.addAuthority(authority);
         return userRepository.save(user);
     }
 }

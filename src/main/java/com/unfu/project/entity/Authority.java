@@ -1,5 +1,6 @@
 package com.unfu.project.entity;
 
+import com.unfu.project.entity.constants.Role;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -17,11 +18,18 @@ public class Authority implements GrantedAuthority, Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "authority")
-    private String authority;
+    @Column(name = "authority", unique = true)
+    @Enumerated(EnumType.STRING)
+    private Role authority;
 
     @Override
     public String getAuthority() {
+        return authority.toString();
+    }
+
+    public static Authority fromRole(Role role) {
+        Authority authority = new Authority();
+        authority.setAuthority(role);
         return authority;
     }
 }
