@@ -1,7 +1,6 @@
 package com.unfu.project.security;
 
 import com.google.api.client.auth.oauth2.AuthorizationCodeFlow;
-import com.google.api.client.auth.oauth2.StoredCredential;
 import com.google.api.client.auth.oauth2.TokenResponse;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.http.javanet.NetHttpTransport;
@@ -40,14 +39,17 @@ public class AuthenticationService {
 
     private final AuthorityMapper authorityMapper;
 
+    private final GoogleDataStore googleDataStore;
+
     public AuthenticationService(JwtTokenProvider jwtTokenProvider, UserRepository userRepository,
-                                 AuthorizationCodeFlow codeFlow, GoogleSecrets googleSecrets, AuthorityRepository authorityRepository, AuthorityMapper authorityMapper) {
+                                 AuthorizationCodeFlow codeFlow, GoogleSecrets googleSecrets, AuthorityRepository authorityRepository, AuthorityMapper authorityMapper, GoogleDataStore googleDataStore) {
         this.jwtTokenProvider = jwtTokenProvider;
         this.userRepository = userRepository;
         this.codeFlow = codeFlow;
         this.googleSecrets = googleSecrets;
         this.authorityRepository = authorityRepository;
         this.authorityMapper = authorityMapper;
+        this.googleDataStore = googleDataStore;
     }
 
 
@@ -70,8 +72,7 @@ public class AuthenticationService {
                 .setApplicationName("Project").build();
         Userinfoplus userProfile = oauth2.userinfo().get().execute();
 
-        StoredCredential storedCredential = new StoredCredential(credential);
-        codeFlow.getCredentialDataStore().set(userProfile.getEmail(), storedCredential);
+        googleDataStore.set(userProfile.getEmail(), credential);
 
         if (userRepository.existsByEmail(userProfile.getEmail())) {
             User user = userRepository.findByEmail(userProfile.getEmail())
