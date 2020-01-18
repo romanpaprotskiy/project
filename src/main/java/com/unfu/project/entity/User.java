@@ -1,5 +1,6 @@
 package com.unfu.project.entity;
 
+import com.unfu.project.entity.constants.Gender;
 import com.unfu.project.entity.constants.Role;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -8,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -32,6 +34,16 @@ public class User implements Serializable, UserDetails {
     @Column(name = "last_name")
     private String lastName;
 
+    @Column(name = "gender")
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
+    @Column(name = "birth_date")
+    private LocalDate birthDate;
+
+    @Column(name = "phone")
+    private String phone;
+
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
@@ -39,7 +51,7 @@ public class User implements Serializable, UserDetails {
     private String userId;
 
     @Column(name = "active")
-    private Boolean active;
+    private Boolean active = true;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_authority", joinColumns = @JoinColumn(name = "user_id"),
@@ -48,7 +60,7 @@ public class User implements Serializable, UserDetails {
     private Set<Authority> authorities = new HashSet<>();
 
     public void addAuthority(Role role) {
-        Authority authority = Authority.fromRole(role);
+        var authority = Authority.fromRole(role);
         authorities.add(authority);
     }
 

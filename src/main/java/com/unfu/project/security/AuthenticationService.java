@@ -8,7 +8,6 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.oauth2.Oauth2;
 import com.google.api.services.oauth2.model.Userinfoplus;
 import com.unfu.project.config.GoogleSecrets;
-import com.unfu.project.entity.Authority;
 import com.unfu.project.entity.User;
 import com.unfu.project.entity.constants.Role;
 import com.unfu.project.payload.exception.PermissionsDeniedException;
@@ -54,38 +53,44 @@ public class AuthenticationService {
 
 
     public AuthResponse authorizeOrRegister(AuthRequest request) throws IOException {
-
-        TokenResponse tokenResponse = codeFlow.newTokenRequest(request.getAuthCode())
-                .setGrantType("authorization_code")
-                .setRedirectUri(request.getRedirectUri())
-                .execute();
-
-        GoogleCredential credential = new GoogleCredential.Builder()
-                .setClientSecrets(googleSecrets.getClientId(), googleSecrets.getClientSecret())
-                .setJsonFactory(new JacksonFactory())
-                .setTransport(new NetHttpTransport())
-                .build();
-
+        var tokenResponse = getTokenResponse(request, codeFlow);
+        var credential = getGoogleCredential(googleSecrets);
         credential.setFromTokenResponse(tokenResponse);
-
-        Oauth2 oauth2 = new Oauth2.Builder(new NetHttpTransport(), new JacksonFactory(), credential)
-                .setApplicationName("Project").build();
-        Userinfoplus userProfile = oauth2.userinfo().get().execute();
-
+        var userProfile = getUserInfoPlus(credential);
         googleDataStore.set(userProfile.getEmail(), credential);
-
         if (userRepository.existsByEmail(userProfile.getEmail())) {
             User user = userRepository.findByEmail(userProfile.getEmail())
                     .orElseThrow(() -> new UsernameNotFoundException("Email not found"));
             return getResponse(user);
         }
-        User user = createUser(userProfile);
+        var user = createUser(userProfile);
         return getResponse(user);
     }
 
+    private Userinfoplus getUserInfoPlus(GoogleCredential credential) throws IOException {
+        var oauth2 = new Oauth2.Builder(new NetHttpTransport(), new JacksonFactory(), credential)
+                .setApplicationName("Project").build();
+        return oauth2.userinfo().get().execute();
+    }
+
+    private TokenResponse getTokenResponse(AuthRequest request, AuthorizationCodeFlow codeFlow) throws IOException {
+        return codeFlow.newTokenRequest(request.getAuthCode())
+                .setGrantType("authorization_code")
+                .setRedirectUri(request.getRedirectUri())
+                .execute();
+    }
+
+    private GoogleCredential getGoogleCredential(GoogleSecrets googleSecrets) {
+        return new GoogleCredential.Builder()
+                .setClientSecrets(googleSecrets.getClientId(), googleSecrets.getClientSecret())
+                .setJsonFactory(new JacksonFactory())
+                .setTransport(new NetHttpTransport())
+                .build();
+    }
+
     private AuthResponse getResponse(User user) {
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-        JWT jwt = jwtTokenProvider.generateToken(authentication);
+        var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+        var jwt = jwtTokenProvider.generateToken(authentication);
         return AuthResponse.builder()
                 .accessToken(jwt.getToken())
                 .expiryDate(jwt.getExpiryDate())
@@ -94,13 +99,13 @@ public class AuthenticationService {
     }
 
     private User createUser(Userinfoplus profile) {
-        User user = new User();
+        var user = new User();
         user.setFirstName(profile.getGivenName());
         user.setLastName(profile.getFamilyName());
         user.setActive(true);
         user.setEmail(profile.getEmail());
         user.setUserId(profile.getId());
-        Authority authority = authorityRepository.findByAuthority(Role.GUEST)
+        var authority = authorityRepository.findByAuthority(Role.GUEST)
                 .orElseThrow(PermissionsDeniedException::new);
         user.addAuthority(authority);
         return userRepository.save(user);

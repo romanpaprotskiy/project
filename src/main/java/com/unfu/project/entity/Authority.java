@@ -28,7 +28,7 @@ public class Authority implements GrantedAuthority, Serializable {
     }
 
     public static Authority fromRole(Role role) {
-        Authority authority = new Authority();
+        var authority = new Authority();
         authority.setAuthority(role);
         return authority;
     }

@@ -19,11 +19,11 @@ public class ProjectApplication {
 
     @PostConstruct
     public void initAuthority() {
-        Authority guest = Authority.fromRole(Role.GUEST);
-        Authority student = Authority.fromRole(Role.STUDENT);
-        Authority teacher = Authority.fromRole(Role.TEACHER);
-        Authority admin = Authority.fromRole(Role.ADMIN);
-        List<Authority> authorities = Arrays.asList(guest, student, teacher, admin);
+        var guest = Authority.fromRole(Role.GUEST);
+        var student = Authority.fromRole(Role.STUDENT);
+        var teacher = Authority.fromRole(Role.TEACHER);
+        var admin = Authority.fromRole(Role.ADMIN);
+        var authorities = List.of(guest, student, teacher, admin);
         for (Authority authority : authorities) {
             if (!authorityRepository.existsByAuthority(Role.fromString(authority.getAuthority()))) {
                 authorityRepository.save(authority);
