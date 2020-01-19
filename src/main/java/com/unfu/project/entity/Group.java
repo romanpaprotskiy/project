@@ -34,8 +34,8 @@ public class Group implements Serializable {
     private Set<Student> students = new HashSet<>();
 
     @ManyToMany
-    @JoinTable(name = "event_group", joinColumns = @JoinColumn(name = "event_id"),
-            inverseJoinColumns = @JoinColumn(name = "group_id"))
+    @JoinTable(name = "event_group", joinColumns = @JoinColumn(name = "group_id"),
+            inverseJoinColumns = @JoinColumn(name = "event_id"))
     @EqualsAndHashCode.Exclude
-    private Set<Group> groups = new HashSet<>();
+    private Set<Event> events = new HashSet<>();
 }

@@ -20,15 +20,9 @@ public class Event implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "event_id", unique = true)
-    private String eventId;
-
-    @ManyToOne
-    @JoinColumn(name = "creator_id")
-    private User creator;
-
-    @Column(name = "created_at")
-    private Instant createdAt;
+    @OneToOne
+    @JoinColumn(name = "google_event")
+    private GoogleEvent googleEvent;
 
     @ManyToMany
     @JoinTable(name = "event_subject", joinColumns = @JoinColumn(name = "event_id"),

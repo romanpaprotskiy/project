@@ -22,6 +22,10 @@ public class Subject implements Serializable {
     @Column(name = "name")
     private String name;
 
+    @OneToMany(mappedBy = "subject")
+    @EqualsAndHashCode.Exclude
+    private Set<SubjectSchedule> subjectSchedules = new HashSet<>();
+
     @ManyToMany
     @JoinTable(name = "event_subject", joinColumns = @JoinColumn(name = "subject_id"),
             inverseJoinColumns = @JoinColumn(name = "event_id"))

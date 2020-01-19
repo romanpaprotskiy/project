@@ -9,11 +9,11 @@ import java.util.Collection;
 import java.util.Set;
 
 @Mapper(componentModel = "spring")
-public abstract class AuthorityMapper {
+public interface AuthorityMapper {
 
-    public abstract AuthorityResponse map(Authority authority);
+    AuthorityResponse map(Authority authority);
 
-    public abstract Set<AuthorityResponse> map(Set<Authority> authorities);
+    Set<AuthorityResponse> map(Set<Authority> authorities);
 
-    public abstract Set<AuthorityResponse> map(Collection<? extends GrantedAuthority> authorities);
+    Set<AuthorityResponse> map(Collection<? extends GrantedAuthority> authorities);
 }

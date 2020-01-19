@@ -16,16 +16,17 @@ public class SubjectSchedule implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "event_id", unique = true)
-    private String eventId;
+    @OneToOne
+    @JoinColumn(name = "google_event_id")
+    private GoogleEvent googleEvent;
 
     @ManyToOne
     @JoinColumn(name = "group_id")
     private Group group;
 
     @ManyToOne
-    @JoinColumn(name = "student_id")
-    private Student student;
+    @JoinColumn(name = "subject_id")
+    private Subject subject;
 
     @ManyToOne
     @JoinColumn(name = "teacher_id")

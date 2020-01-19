@@ -23,7 +23,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/social/signin/google")
-    public ResponseEntity signIn(@Valid @RequestBody AuthRequest request) throws IOException {
+    public ResponseEntity<AuthResponse> signIn(@Valid @RequestBody AuthRequest request) throws IOException {
 
         AuthResponse response = authenticationService.authorizeOrRegister(request);
         return ResponseEntity.ok(response);
