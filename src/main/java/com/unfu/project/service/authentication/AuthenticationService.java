@@ -17,6 +17,7 @@ import com.unfu.project.repository.authentication.AuthorityRepository;
 import com.unfu.project.repository.users.UserRepository;
 import com.unfu.project.service.authentication.data.GoogleDataStore;
 import com.unfu.project.service.authentication.mapper.AuthorityMapper;
+import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -24,8 +25,8 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 
 @Service
+@AllArgsConstructor
 public class AuthenticationService {
-
 
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -40,18 +41,6 @@ public class AuthenticationService {
     private final AuthorityMapper authorityMapper;
 
     private final GoogleDataStore googleDataStore;
-
-    public AuthenticationService(JwtTokenProvider jwtTokenProvider, UserRepository userRepository,
-                                 AuthorizationCodeFlow codeFlow, GoogleSecrets googleSecrets, AuthorityRepository authorityRepository, AuthorityMapper authorityMapper, GoogleDataStore googleDataStore) {
-        this.jwtTokenProvider = jwtTokenProvider;
-        this.userRepository = userRepository;
-        this.codeFlow = codeFlow;
-        this.googleSecrets = googleSecrets;
-        this.authorityRepository = authorityRepository;
-        this.authorityMapper = authorityMapper;
-        this.googleDataStore = googleDataStore;
-    }
-
 
     public AuthResponse authorizeOrRegister(AuthRequest request) throws IOException {
         var tokenResponse = getTokenResponse(request, codeFlow);
@@ -106,6 +95,7 @@ public class AuthenticationService {
         user.setActive(true);
         user.setEmail(profile.getEmail());
         user.setUserId(profile.getId());
+        user.setPictureUrl(profile.getPicture());
         var authority = authorityRepository.findByAuthority(Role.GUEST)
                 .orElseThrow(PermissionsDeniedException::new);
         user.addAuthority(authority);
