@@ -1,6 +1,6 @@
 package com.unfu.project.config;
 
-import com.unfu.project.security.JwtFilter;
+import com.unfu.project.service.authentication.JwtFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;

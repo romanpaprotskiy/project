@@ -1,14 +1,13 @@
 package com.unfu.project;
 
-import com.unfu.project.entity.Authority;
-import com.unfu.project.entity.constants.Role;
-import com.unfu.project.repository.AuthorityRepository;
+import com.unfu.project.domain.authentication.Authority;
+import com.unfu.project.domain.authentication.enumeration.Role;
+import com.unfu.project.repository.authentication.AuthorityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import javax.annotation.PostConstruct;
-import java.util.Arrays;
 import java.util.List;
 
 @SpringBootApplication
