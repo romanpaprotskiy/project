@@ -12,4 +12,6 @@ public class ProfileResponse implements Serializable {
     private static final long serialVersionUID = 437116005867057783L;
 
     private UserResponse user;
+
+    private StudentResponse student;
 }

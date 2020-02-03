@@ -45,6 +45,9 @@ public class User implements Serializable, UserDetails {
     @Column(name = "phone")
     private String phone;
 
+    @Column(name = "skype_id")
+    private String skypeId;
+
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 

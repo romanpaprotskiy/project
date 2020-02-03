@@ -1,29 +1,29 @@
 package com.unfu.project.service.users.impl;
 
-import com.unfu.project.domain.users.User;
-import com.unfu.project.service.users.payload.response.ProfileResponse;
-import com.unfu.project.service.users.payload.response.UserResponse;
-import com.unfu.project.repository.users.UserRepository;
 import com.unfu.project.service.users.ProfileService;
-import com.unfu.project.service.users.mapper.UserMapper;
+import com.unfu.project.service.users.StudentService;
+import com.unfu.project.service.users.UserService;
+import com.unfu.project.service.users.payload.response.ProfileResponse;
+import com.unfu.project.service.users.payload.response.StudentResponse;
+import com.unfu.project.service.users.payload.response.UserResponse;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
 public class ProfileServiceImpl implements ProfileService {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    private final UserMapper userMapper;
+    private final StudentService studentService;
 
     @Override
     public ProfileResponse getCurrentUserProfile() {
-        User current = userRepository.findCurrent();
-        UserResponse response = userMapper.map(current);
+        UserResponse userResponse = userService.findCurrentUserResponse();
+        StudentResponse studentResponse = studentService.findResponseByUserId(userResponse.getId());
         return ProfileResponse.builder()
-                .user(response)
+                .user(userResponse)
+                .student(studentResponse)
                 .build();
     }
 }

@@ -29,6 +29,8 @@ public class UserResponse implements Serializable {
 
     private String phone;
 
+    private String skypeId;
+
     private String userId;
 
     private Boolean active;
