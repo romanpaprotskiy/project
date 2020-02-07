@@ -35,4 +35,7 @@ public class SubjectSchedule implements Serializable {
     @ManyToOne
     @JoinColumn(name = "teacher_id")
     private Teacher teacher;
+
+    @Column(name = "active")
+    private Boolean active;
 }
