@@ -3,8 +3,7 @@ package com.unfu.project.domain.users;
 import com.unfu.project.domain.authentication.Authority;
 import com.unfu.project.domain.users.enumeration.Gender;
 import com.unfu.project.domain.authentication.enumeration.Role;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -18,6 +17,9 @@ import java.util.Set;
 @Entity
 @Table(name = "usr")
 @Data
+@NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class User implements Serializable, UserDetails {
 
     private static final long serialVersionUID = -442253584073640320L;
@@ -62,6 +64,21 @@ public class User implements Serializable, UserDetails {
             inverseJoinColumns = @JoinColumn(name = "authority_id"))
     @EqualsAndHashCode.Exclude
     private Set<Authority> authorities = new HashSet<>();
+
+    public User(User user) {
+        this.id = user.getId();
+        this.pictureUrl = user.getPictureUrl();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.gender = user.getGender();
+        this.birthDate = user.getBirthDate();
+        this.phone = user.getPhone();
+        this.skypeId = user.getSkypeId();
+        this.email = user.getEmail();
+        this.userId = user.getUserId();
+        this.active = user.getActive();
+        this.authorities = user.authorities;
+    }
 
     public void addAuthority(Role role) {
         var authority = Authority.fromRole(role);

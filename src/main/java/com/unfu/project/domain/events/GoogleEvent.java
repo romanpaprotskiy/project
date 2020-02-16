@@ -28,6 +28,6 @@ public class GoogleEvent implements Serializable {
     @Column(name = "event_id", unique = true)
     private String eventId;
 
-    @Column(name = "is_recurrent")
-    private Boolean isRecurrent;
+    @Column(name = "recurrent")
+    private Boolean recurrent;
 }
