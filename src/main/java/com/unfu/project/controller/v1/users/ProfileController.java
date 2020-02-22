@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/v1/profile")
 @AllArgsConstructor
@@ -29,7 +31,7 @@ public class ProfileController {
 
     @PutMapping("/current")
     @PreAuthorize("hasAnyAuthority('GUEST','STUDENT','TEACHER', 'ADMIN')")
-    public ResponseEntity<UserResponse> getCurrentUserProfile(@RequestBody EditProfileRequest request) {
+    public ResponseEntity<UserResponse> getCurrentUserProfile(@Valid @RequestBody EditProfileRequest request) {
 
         UserResponse userResponse = userService.editCurrentUser(request);
         return ResponseEntity.ok(userResponse);
