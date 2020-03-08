@@ -1,6 +1,7 @@
 package com.unfu.project.service.users.impl;
 
 import com.unfu.project.repository.users.StudentRepository;
+import com.unfu.project.service.managerment.payload.GroupStudentsCount;
 import com.unfu.project.service.users.StudentService;
 import com.unfu.project.service.users.mapper.StudentMapper;
 import com.unfu.project.service.users.mapper.StudentUserMapper;
@@ -10,6 +11,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -32,5 +36,15 @@ public class StudentServiceImpl implements StudentService {
     public Page<StudentUserResponse> findAll(Pageable pageable) {
         return studentRepository.findAll(pageable)
                 .map(studentUserMapper::map);
+    }
+
+    @Override
+    public Map<Long, Long> countOfStudentsByGroupIds() {
+        var groupStudentsCounts = studentRepository.countStudentsByGroupIdIn();
+        Map<Long, Long> map = new HashMap<>();
+        for (GroupStudentsCount group : groupStudentsCounts) {
+            map.put(group.getGroupId(), group.getCountOfStudents());
+        }
+        return map;
     }
 }

@@ -6,18 +6,21 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GroupResponse implements Serializable {
+public class GroupWithSubgroupsResponse implements Serializable {
 
-    private static final long serialVersionUID = -7486082223837637760L;
+    private static final long serialVersionUID = -4530303351671382758L;
 
     private Long id;
 
     private String name;
 
-    private GroupResponse parent;
+    private Long countOfStudents;
+
+    private List<GroupWithSubgroupsResponse> subGroups;
 }

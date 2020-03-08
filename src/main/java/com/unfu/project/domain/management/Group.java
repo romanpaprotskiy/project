@@ -29,11 +29,16 @@ public class Group implements Serializable {
     @JoinColumn(name = "parent_id")
     private Group parent;
 
+    @OneToMany(mappedBy = "parent")
+    @EqualsAndHashCode.Exclude
+    private Set<Group> subGroups = new HashSet<>();
+
     @ManyToOne
     @JoinColumn(name = "guide_id")
     private Teacher guide;
 
     @OneToMany(mappedBy = "group")
+    @EqualsAndHashCode.Exclude
     private Set<Student> students = new HashSet<>();
 
     @ManyToMany

@@ -1,0 +1,15 @@
+package com.unfu.project.repository.managerment;
+
+import com.unfu.project.domain.management.Group;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface GroupRepository extends JpaRepository<Group, Long> {
+
+    @EntityGraph(attributePaths = {"subGroups"})
+    Page<Group> findAllByParentIsNull(Pageable pageable);
+}
