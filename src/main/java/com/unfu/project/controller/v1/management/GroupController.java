@@ -1,12 +1,11 @@
 package com.unfu.project.controller.v1.management;
 
 import com.unfu.project.service.managerment.GroupService;
+import com.unfu.project.service.managerment.payload.request.GroupCreateRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/groups")
@@ -19,5 +18,17 @@ public class GroupController {
     public ResponseEntity<?> findAll(Pageable pageable) {
         var page = groupService.findAllWithSubgroups(pageable);
         return ResponseEntity.ok(page);
+    }
+
+    @PostMapping
+    public ResponseEntity<?> save(@RequestBody GroupCreateRequest request) {
+        var response = groupService.save(request);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/root")
+    public ResponseEntity<?> findAll() {
+        var response = groupService.findAllWithParentNull();
+        return ResponseEntity.ok(response);
     }
 }

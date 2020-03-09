@@ -4,6 +4,7 @@ import com.unfu.project.domain.management.Group;
 import com.unfu.project.repository.managerment.GroupRepository;
 import com.unfu.project.service.managerment.GroupService;
 import com.unfu.project.service.managerment.mapper.GroupMapper;
+import com.unfu.project.service.managerment.payload.request.GroupCreateRequest;
 import com.unfu.project.service.managerment.payload.response.GroupResponse;
 import com.unfu.project.service.managerment.payload.response.GroupWithSubgroupsResponse;
 import com.unfu.project.service.users.StudentService;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,14 +41,26 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public Page<GroupWithSubgroupsResponse> findAllWithSubgroups(Pageable pageable) {
         var groups = groupRepository.findAllByParentIsNull(pageable);
-        Map<Group, List<Group>> subGroupsMap = groups.stream()
-                .flatMap(v -> v.getSubGroups().stream())
-                .collect(Collectors.groupingBy(Group::getParent));
         countOfStudentsMap = studentService.countOfStudentsByGroupIds();
-        var responses = subGroupsMap.keySet().stream()
+        var responses = groups.stream()
                 .map(this::mapGroupWithSubgroupsResponse)
                 .collect(Collectors.toList());
         return new PageImpl<>(responses, pageable, responses.size());
+    }
+
+    @Override
+    public GroupResponse save(GroupCreateRequest request) {
+        var group = groupMapper.map(request);
+        var saved = groupRepository.save(group);
+        return groupMapper.map(saved);
+    }
+
+    @Override
+    public List<GroupResponse> findAllWithParentNull() {
+        return groupRepository.findAllByParentIsNull()
+                .stream()
+                .map(groupMapper::map)
+                .collect(Collectors.toList());
     }
 
     private GroupWithSubgroupsResponse mapGroupWithSubgroupsResponse(Group data) {
@@ -72,6 +86,7 @@ public class GroupServiceImpl implements GroupService {
     private Long countOfStudentsBySubGroups(List<GroupWithSubgroupsResponse> subgroups) {
         return subgroups.stream()
                 .map(GroupWithSubgroupsResponse::getCountOfStudents)
+                .filter(Objects::nonNull)
                 .reduce(0L, Long::sum);
     }
 }

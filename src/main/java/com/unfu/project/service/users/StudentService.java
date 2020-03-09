@@ -5,7 +5,6 @@ import com.unfu.project.service.users.payload.response.StudentUserResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.Collection;
 import java.util.Map;
 
 public interface StudentService {
