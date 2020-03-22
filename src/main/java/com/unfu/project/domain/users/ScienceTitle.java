@@ -3,6 +3,7 @@ package com.unfu.project.domain.users;
 import com.unfu.project.domain.users.Teacher;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -28,5 +29,6 @@ public class ScienceTitle implements Serializable {
 
     @OneToMany(mappedBy = "scienceTitle")
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Set<Teacher> teachers = new HashSet<>();
 }

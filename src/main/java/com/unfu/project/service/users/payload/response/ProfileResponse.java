@@ -4,14 +4,11 @@ import com.unfu.project.service.managerment.payload.response.SubjectResponse;
 import lombok.Builder;
 import lombok.Data;
 
-import java.io.Serializable;
 import java.util.List;
 
 @Data
 @Builder
-public final class ProfileResponse implements Serializable {
-
-    private static final long serialVersionUID = 437116005867057783L;
+public final class ProfileResponse {
 
     private final UserResponse user;
 

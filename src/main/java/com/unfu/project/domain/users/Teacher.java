@@ -3,6 +3,7 @@ package com.unfu.project.domain.users;
 import com.unfu.project.domain.events.Event;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -36,5 +37,6 @@ public class Teacher implements Serializable {
     @JoinTable(name = "event_teacher", joinColumns = @JoinColumn(name = "teacher_id"),
             inverseJoinColumns = @JoinColumn(name = "event_id"))
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Set<Event> events = new HashSet<>();
 }

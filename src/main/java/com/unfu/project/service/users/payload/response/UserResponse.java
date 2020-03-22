@@ -4,14 +4,11 @@ import com.unfu.project.domain.users.enumeration.Gender;
 import com.unfu.project.service.authentication.payload.response.AuthorityResponse;
 import lombok.Data;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Set;
 
 @Data
-public class UserResponse implements Serializable {
-
-    private static final long serialVersionUID = -2493840840358134223L;
+public class UserResponse {
 
     private Long id;
 
