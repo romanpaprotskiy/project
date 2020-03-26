@@ -1,5 +1,6 @@
 package com.unfu.project.service.managerment.payload.response;
 
+import com.unfu.project.service.users.payload.response.PublicTeacherResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,4 +24,6 @@ public class GroupWithSubgroupsResponse implements Serializable {
     private Long countOfStudents;
 
     private List<GroupWithSubgroupsResponse> subGroups;
+
+    private PublicTeacherResponse guide;
 }

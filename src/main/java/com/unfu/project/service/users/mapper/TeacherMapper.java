@@ -2,6 +2,7 @@ package com.unfu.project.service.users.mapper;
 
 import com.unfu.project.domain.users.Teacher;
 import com.unfu.project.service.users.payload.response.PublicTeacherResponse;
+import com.unfu.project.service.users.payload.response.TeacherResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -15,7 +16,17 @@ public interface TeacherMapper {
     @Mapping(source = "user.firstName", target = "firstName")
     @Mapping(source = "user.lastName", target = "lastName")
     @Mapping(source = "scienceTitle.name", target = "scienceTitleName")
+    @Mapping(source = "user.pictureUrl", target = "pictureUrl")
     PublicTeacherResponse map(Teacher teacher);
+
+    @Mapping(source = "user.firstName", target = "firstName")
+    @Mapping(source = "user.lastName", target = "lastName")
+    @Mapping(source = "scienceTitle.name", target = "scienceTitleName")
+    @Mapping(source = "user.pictureUrl", target = "pictureUrl")
+    @Mapping(source = "user.email", target = "email")
+    @Mapping(source = "user.phone", target = "phone")
+    @Mapping(source = "user.birthDate", target = "birthDate")
+    TeacherResponse mapResponse(Teacher teacher);
 
     List<PublicTeacherResponse> map(Collection<Teacher> teachers);
 

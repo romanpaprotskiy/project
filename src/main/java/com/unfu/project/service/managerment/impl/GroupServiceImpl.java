@@ -8,6 +8,7 @@ import com.unfu.project.service.managerment.payload.request.GroupCreateRequest;
 import com.unfu.project.service.managerment.payload.response.GroupResponse;
 import com.unfu.project.service.managerment.payload.response.GroupWithSubgroupsResponse;
 import com.unfu.project.service.users.StudentService;
+import com.unfu.project.service.users.mapper.TeacherMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -29,6 +30,8 @@ public class GroupServiceImpl implements GroupService {
     private final GroupMapper groupMapper;
 
     private final StudentService studentService;
+
+    private final TeacherMapper teacherMapper;
 
     private Map<Long, Long> countOfStudentsMap;
 
@@ -68,6 +71,7 @@ public class GroupServiceImpl implements GroupService {
                 .id(data.getId())
                 .name(data.getName())
                 .subGroups(mapSubGroups(data.getSubGroups()))
+                .guide(teacherMapper.map(data.getGuide()))
                 .build();
         group.setCountOfStudents(countOfStudentsBySubGroups(group.getSubGroups()));
         return group;
