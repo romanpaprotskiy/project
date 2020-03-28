@@ -9,6 +9,7 @@ import com.unfu.project.service.managerment.payload.response.GroupResponse;
 import com.unfu.project.service.managerment.payload.response.GroupWithSubgroupsResponse;
 import com.unfu.project.service.users.StudentService;
 import com.unfu.project.service.users.mapper.TeacherMapper;
+import com.unfu.project.service.util.PaginationUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -42,13 +43,12 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public Page<GroupWithSubgroupsResponse> findAllWithSubgroups(Pageable pageable) {
-        var groups = groupRepository.findAllByParentIsNull(pageable);
+    public Collection<GroupWithSubgroupsResponse> findAllWithSubgroups() {
+        var groups = groupRepository.findAllByParentIsNull();
         countOfStudentsMap = studentService.countOfStudentsByGroupIds();
-        var responses = groups.stream()
+        return groups.stream()
                 .map(this::mapGroupWithSubgroupsResponse)
                 .collect(Collectors.toList());
-        return new PageImpl<>(responses, pageable, responses.size());
     }
 
     @Override

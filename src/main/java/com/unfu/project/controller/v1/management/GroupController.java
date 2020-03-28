@@ -2,6 +2,7 @@ package com.unfu.project.controller.v1.management;
 
 import com.unfu.project.service.managerment.GroupService;
 import com.unfu.project.service.managerment.payload.request.GroupCreateRequest;
+import com.unfu.project.service.util.PaginationUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +17,8 @@ public class GroupController {
 
     @GetMapping
     public ResponseEntity<?> findAll(Pageable pageable) {
-        var page = groupService.findAllWithSubgroups(pageable);
-        return ResponseEntity.ok(page);
+        var page = groupService.findAllWithSubgroups();
+        return ResponseEntity.ok(PaginationUtil.of(page, pageable));
     }
 
     @PostMapping

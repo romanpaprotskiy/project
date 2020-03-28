@@ -1,6 +1,7 @@
 package com.unfu.project.controller.v1.users;
 
 import com.unfu.project.service.users.StudentService;
+import com.unfu.project.service.util.PaginationUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,6 @@ public class StudentsController {
     @GetMapping
     public ResponseEntity<?> getStudents(Pageable pageable) {
         var page = studentService.findAll(pageable);
-        return ResponseEntity.ok(page);
+        return ResponseEntity.ok(PaginationUtil.valueOf(page));
     }
 }

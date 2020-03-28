@@ -21,7 +21,7 @@ logging:
 
 jwt:
   secret: tXmwC4o6aOoHUaKhZjuhxTb20p2abQaX
-  expirationInMs: 3600000
+  expirationInMs: 360000000000000
 
 google:
   clientId: 217658242103-pv74qrnmoku2aqhtgre77kutpfuk1sqe.apps.googleusercontent.com
