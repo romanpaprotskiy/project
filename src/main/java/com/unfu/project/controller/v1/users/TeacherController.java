@@ -1,6 +1,7 @@
 package com.unfu.project.controller.v1.users;
 
 import com.unfu.project.service.users.TeacherService;
+import com.unfu.project.service.util.PaginationUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,6 @@ public class TeacherController {
     @GetMapping
     public ResponseEntity<?> getPage(Pageable pageable) {
         var page = teacherService.findAll(pageable);
-        return ResponseEntity.status(HttpStatus.OK).body(page);
+        return ResponseEntity.status(HttpStatus.OK).body(PaginationUtil.valueOf(page));
     }
 }
