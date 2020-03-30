@@ -1,10 +1,12 @@
 package com.unfu.project.service.users.impl;
 
+import com.unfu.project.domain.users.Student;
 import com.unfu.project.repository.users.StudentRepository;
 import com.unfu.project.service.managerment.payload.GroupStudentsCount;
 import com.unfu.project.service.users.StudentService;
 import com.unfu.project.service.users.mapper.StudentMapper;
 import com.unfu.project.service.users.mapper.StudentUserMapper;
+import com.unfu.project.service.users.payload.request.CreateStudentRequest;
 import com.unfu.project.service.users.payload.response.StudentResponse;
 import com.unfu.project.service.users.payload.response.StudentUserResponse;
 import lombok.AllArgsConstructor;
@@ -46,5 +48,11 @@ public class StudentServiceImpl implements StudentService {
             map.put(group.getGroupId(), group.getCountOfStudents());
         }
         return map;
+    }
+
+    @Override
+    public StudentResponse createStudent(CreateStudentRequest request) {
+        Student student = studentMapper.map(request);
+        return studentMapper.map(studentRepository.save(student));
     }
 }

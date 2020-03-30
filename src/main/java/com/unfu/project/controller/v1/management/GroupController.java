@@ -32,4 +32,10 @@ public class GroupController {
         var response = groupService.findAllWithParentNull();
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/subgroups")
+    public ResponseEntity<?> getSubgroups() {
+        var response = groupService.getSubgroups();
+        return ResponseEntity.ok(response);
+    }
 }

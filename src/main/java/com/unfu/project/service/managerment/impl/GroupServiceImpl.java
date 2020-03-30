@@ -66,6 +66,15 @@ public class GroupServiceImpl implements GroupService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<GroupResponse> getSubgroups() {
+        return groupRepository.findAllFetchSubGroups()
+                .stream()
+                .filter(g -> g.getSubGroups().isEmpty())
+                .map(groupMapper::map)
+                .collect(Collectors.toList());
+    }
+
     private GroupWithSubgroupsResponse mapGroupWithSubgroupsResponse(Group data) {
         var group = GroupWithSubgroupsResponse.builder()
                 .id(data.getId())

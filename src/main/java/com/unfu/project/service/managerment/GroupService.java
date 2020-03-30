@@ -1,5 +1,6 @@
 package com.unfu.project.service.managerment;
 
+import com.unfu.project.domain.management.Group;
 import com.unfu.project.service.managerment.payload.request.GroupCreateRequest;
 import com.unfu.project.service.managerment.payload.response.GroupResponse;
 import com.unfu.project.service.managerment.payload.response.GroupWithSubgroupsResponse;
@@ -18,4 +19,9 @@ public interface GroupService {
     GroupResponse save(GroupCreateRequest request);
 
     List<GroupResponse> findAllWithParentNull();
+
+    /**
+     * @return - {@link Group} that does not have children groups
+     */
+    List<GroupResponse> getSubgroups();
 }

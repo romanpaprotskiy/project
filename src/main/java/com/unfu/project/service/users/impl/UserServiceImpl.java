@@ -7,9 +7,13 @@ import com.unfu.project.service.authentication.util.SecurityUtils;
 import com.unfu.project.service.users.UserService;
 import com.unfu.project.service.users.mapper.UserMapper;
 import com.unfu.project.service.users.payload.request.EditProfileRequest;
+import com.unfu.project.service.users.payload.response.PublicUserResponse;
 import com.unfu.project.service.users.payload.response.UserResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -31,5 +35,13 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(currentUserId).orElseThrow(UserNotFoundException::new);
         User edit = userMapper.edit(user, request);
         return userMapper.map(userRepository.save(edit));
+    }
+
+    @Override
+    public List<PublicUserResponse> findAllActive() {
+        return userRepository.findAllByActive(true)
+                .stream()
+                .map(userMapper::mapToPublic)
+                .collect(Collectors.toList());
     }
 }
