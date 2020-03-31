@@ -8,11 +8,11 @@ import java.io.Serializable;
 
 @Data
 @Builder
-public class SubjectResponse implements Serializable {
-
-    private static final long serialVersionUID = 2587878160068993197L;
+public class SubjectResponse {
 
     private Long id;
 
     private String name;
+
+    private String courseNumber;
 }

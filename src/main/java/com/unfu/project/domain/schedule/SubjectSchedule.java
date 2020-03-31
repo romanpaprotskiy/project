@@ -7,14 +7,11 @@ import com.unfu.project.domain.users.Teacher;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
 @Table(name = "subject_schedule")
 @Data
-public class SubjectSchedule implements Serializable {
-
-    private static final long serialVersionUID = -1427282206693514984L;
+public class SubjectSchedule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

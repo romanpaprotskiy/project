@@ -13,9 +13,7 @@ import java.util.Set;
 @Entity
 @Table(name = "subject")
 @Data
-public class Subject implements Serializable {
-
-    private static final long serialVersionUID = 3909860585371887222L;
+public class Subject {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

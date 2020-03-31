@@ -12,4 +12,9 @@ public final class SecurityUtils {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return user.getId();
     }
+
+    public static String getCurrentUserEmail() {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return user.getEmail();
+    }
 }
