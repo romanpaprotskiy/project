@@ -14,9 +14,7 @@ import java.util.Set;
 @Table(name = "students_group")
 @Data
 @NoArgsConstructor
-public class Group implements Serializable {
-
-    private static final long serialVersionUID = 1317900474484227262L;
+public class Group {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,14 +23,10 @@ public class Group implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "parent_id")
-    private Group parent;
-
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "group")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private Set<Group> subGroups = new HashSet<>();
+    private Set<SubGroup> subGroups = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "guide_id")

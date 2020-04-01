@@ -13,9 +13,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GroupWithSubgroupsResponse implements Serializable {
-
-    private static final long serialVersionUID = -4530303351671382758L;
+public class GroupWithSubgroupsResponse {
 
     private Long id;
 
@@ -23,7 +21,7 @@ public class GroupWithSubgroupsResponse implements Serializable {
 
     private Long countOfStudents;
 
-    private List<GroupWithSubgroupsResponse> subGroups;
+    private List<SubGroupWithCountOfStudents> subGroups;
 
     private PublicTeacherResponse guide;
 }

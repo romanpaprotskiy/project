@@ -2,6 +2,7 @@ package com.unfu.project.service.users.payload.request;
 
 import lombok.Data;
 
+import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
@@ -13,6 +14,8 @@ public final class CreateStudentRequest {
 
     @NotNull(message = "Group is required")
     private Long groupId;
+
+    private Long subGroupId;
 
     private LocalDate dateOfEnroll;
 }

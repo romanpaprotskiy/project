@@ -4,15 +4,19 @@ spring:
     username: root
     password: STRONGpwd1$
 
-date-time:
-  timezone: Europe/Kiev
-
   jpa:
     hibernate:
+      show_sql: true
+      format_sql: true
       ddl-auto: update
     properties:
       hibernate:
+        naming:
+          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+
+date-time:
+  timezone: Europe/Kiev
 
 logging:
   level:

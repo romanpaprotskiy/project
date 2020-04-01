@@ -2,6 +2,7 @@ package com.unfu.project.domain.schedule;
 
 import com.unfu.project.domain.events.GoogleEvent;
 import com.unfu.project.domain.management.Group;
+import com.unfu.project.domain.management.SubGroup;
 import com.unfu.project.domain.management.Subject;
 import com.unfu.project.domain.users.Teacher;
 import lombok.Data;
@@ -24,6 +25,10 @@ public class SubjectSchedule {
     @ManyToOne
     @JoinColumn(name = "group_id")
     private Group group;
+
+    @ManyToOne
+    @JoinColumn(name = "sub_group_id")
+    private SubGroup subGroup;
 
     @ManyToOne
     @JoinColumn(name = "subject_id")

@@ -28,10 +28,9 @@ public class StudentServiceImpl implements StudentService {
     private final StudentUserMapper studentUserMapper;
 
     @Override
-    public StudentResponse findResponseByUserId(Long userId) {
-        return studentRepository.findByUserId(userId)
-                .map(studentMapper::map)
-                .orElse(null);
+    public Optional<StudentResponse> findResponseByUserId(Long userId) {
+         return studentRepository.findByUserId(userId)
+                .map(studentMapper::map);
     }
 
     @Override

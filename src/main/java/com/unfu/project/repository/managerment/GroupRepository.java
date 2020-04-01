@@ -1,6 +1,8 @@
 package com.unfu.project.repository.managerment;
 
 import com.unfu.project.domain.management.Group;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,9 +14,7 @@ import java.util.Set;
 @Repository
 public interface GroupRepository extends JpaRepository<Group, Long> {
 
-    @EntityGraph(attributePaths = {"subGroups"})
-    List<Group> findAllByParentIsNull();
-
-    @Query("select g from Group g left join fetch g.subGroups sg order by g.parent.id, g.id")
-    Set<Group> findAllFetchSubGroups();
+    @Query("select g from Group g")
+    @EntityGraph(attributePaths = {"subGroups", "students", "subGroups.students"})
+    Page<Group> findAllAndFetch(Pageable pageable);
 }

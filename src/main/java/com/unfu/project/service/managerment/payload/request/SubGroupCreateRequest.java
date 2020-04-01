@@ -3,9 +3,9 @@ package com.unfu.project.service.managerment.payload.request;
 import lombok.Data;
 
 @Data
-public class GroupCreateRequest {
+public class SubGroupCreateRequest {
 
     private String name;
 
-    private Long teacherId;
+    private Long groupId;
 }

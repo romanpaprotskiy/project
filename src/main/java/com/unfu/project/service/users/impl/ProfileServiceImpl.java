@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -26,11 +27,12 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public ProfileResponse getCurrentUserProfile() {
         UserResponse userResponse = userService.findCurrentUserResponse();
-        StudentResponse studentResponse = studentService.findResponseByUserId(userResponse.getId());
-        List<SubjectResponse> subjects = subjectService.getStudentSubjectsByStudentId(studentResponse.getId());
+        Optional<StudentResponse> student = studentService.findResponseByUserId(userResponse.getId());
+        List<SubjectResponse> subjects = subjectService
+                .getStudentSubjectsByStudentId(student.orElse(new StudentResponse()).getId());
         return ProfileResponse.builder()
                 .user(userResponse)
-                .student(studentResponse)
+                .student(student.orElse(null))
                 .subjects(subjects)
                 .build();
     }

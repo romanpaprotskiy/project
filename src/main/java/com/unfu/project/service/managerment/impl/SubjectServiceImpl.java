@@ -25,11 +25,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,7 +45,8 @@ public class SubjectServiceImpl implements SubjectService {
     private final StudentUserMapper studentUserMapper;
 
     @Override
-    public List<SubjectResponse> getStudentSubjectsByStudentId(Long studentId) {
+    public List<SubjectResponse> getStudentSubjectsByStudentId(@Nullable Long studentId) {
+        if (Objects.isNull(studentId)) return Collections.emptyList();
         return subjectRepository.findAllByStudentId(studentId)
                 .stream()
                 .map(subjectMapper::map)
@@ -95,23 +94,14 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     private List<StudentUserResponse> mapStudents(Group group) {
-        List<StudentUserResponse> studentResponses = group.getStudents().stream()
-                .map(studentUserMapper::map)
-                .collect(Collectors.toList());
-        List<StudentUserResponse> fromSubGroups = mapFromSubGroups(group.getSubGroups());
-        studentResponses.addAll(fromSubGroups);
-        return studentResponses;
-    }
-
-    private List<StudentUserResponse> mapFromSubGroups(Collection<Group> groups) {
-        return groups.stream()
-                .flatMap(g -> g.getStudents().stream())
+        return group.getStudents().stream()
                 .map(studentUserMapper::map)
                 .collect(Collectors.toList());
     }
 
     private List<TeacherResponse> mapTeachers(Set<SubjectSchedule> subjectSchedules) {
         return subjectSchedules.stream()
+                .filter(Objects::nonNull)
                 .filter(SubjectSchedule::getActive)
                 .map(SubjectSchedule::getTeacher)
                 .map(teacherMapper::mapResponse)

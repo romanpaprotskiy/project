@@ -5,12 +5,13 @@ import com.unfu.project.service.managerment.payload.response.SubjectWithParticip
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.List;
 
 public interface SubjectService {
 
-    List<SubjectResponse> getStudentSubjectsByStudentId(Long studentId);
+    List<SubjectResponse> getStudentSubjectsByStudentId(@Nullable Long studentId);
 
     Page<SubjectResponse> findAll(Pageable pageable);
 
