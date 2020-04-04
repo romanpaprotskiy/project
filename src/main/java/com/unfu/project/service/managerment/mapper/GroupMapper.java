@@ -3,7 +3,9 @@ package com.unfu.project.service.managerment.mapper;
 import com.unfu.project.domain.management.Group;
 import com.unfu.project.service.managerment.payload.request.GroupCreateRequest;
 import com.unfu.project.service.managerment.payload.response.GroupResponse;
+import com.unfu.project.service.managerment.payload.response.GroupWithStudents;
 import com.unfu.project.service.managerment.payload.response.GroupWithSubgroupsResponse;
+import com.unfu.project.service.users.mapper.StudentUserMapper;
 import com.unfu.project.service.users.mapper.TeacherMapper;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
@@ -12,7 +14,7 @@ import org.mapstruct.MappingTarget;
 
 import java.util.Objects;
 
-@Mapper(componentModel = "spring", uses = {TeacherMapper.class, SubGroupMapper.class})
+@Mapper(componentModel = "spring", uses = {TeacherMapper.class, SubGroupMapper.class, StudentUserMapper.class})
 public interface GroupMapper {
 
     GroupResponse map(Group group);
@@ -21,6 +23,8 @@ public interface GroupMapper {
     Group map(GroupCreateRequest request);
 
     GroupWithSubgroupsResponse mapWithSubGroups(Group group);
+
+    GroupWithStudents mapWithStudents(Group group);
 
     @AfterMapping
     default void after(@MappingTarget GroupWithSubgroupsResponse response, Group group) {

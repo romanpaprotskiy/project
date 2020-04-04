@@ -4,6 +4,7 @@ import com.unfu.project.domain.management.Group;
 import com.unfu.project.service.managerment.payload.request.GroupCreateRequest;
 import com.unfu.project.service.managerment.payload.request.SubGroupCreateRequest;
 import com.unfu.project.service.managerment.payload.response.GroupResponse;
+import com.unfu.project.service.managerment.payload.response.GroupWithStudents;
 import com.unfu.project.service.managerment.payload.response.GroupWithSubgroupsResponse;
 import com.unfu.project.service.managerment.payload.response.SubGroupResponse;
 import org.springframework.data.domain.Page;

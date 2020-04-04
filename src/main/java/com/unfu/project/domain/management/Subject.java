@@ -23,6 +23,9 @@ public class Subject {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "course_number")
+    private String courseNumber;
+
     @OneToMany(mappedBy = "subject")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
@@ -34,4 +37,9 @@ public class Subject {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Set<Event> events = new HashSet<>();
+
+    @OneToMany(mappedBy = "subject")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Set<SubSubject> subSubjects = new HashSet<>();
 }

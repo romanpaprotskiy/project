@@ -3,21 +3,15 @@ package com.unfu.project.service.managerment.impl;
 import com.unfu.project.domain.management.Group;
 import com.unfu.project.domain.management.Subject;
 import com.unfu.project.domain.schedule.SubjectSchedule;
-import com.unfu.project.exception.BadRequestException;
 import com.unfu.project.repository.managerment.SubjectRepository;
 import com.unfu.project.service.events.EventService;
-import com.unfu.project.service.events.payload.response.GoogleRecurrentEventResponse;
 import com.unfu.project.service.managerment.SubjectService;
-import com.unfu.project.service.managerment.mapper.GroupMapper;
 import com.unfu.project.service.managerment.mapper.SubjectMapper;
-import com.unfu.project.service.managerment.payload.response.GroupResponse;
+import com.unfu.project.service.managerment.payload.request.CreateSubjectRequest;
 import com.unfu.project.service.managerment.payload.response.GroupWithStudents;
 import com.unfu.project.service.managerment.payload.response.SubjectResponse;
-import com.unfu.project.service.managerment.payload.response.SubjectWithParticipants;
-import com.unfu.project.service.users.mapper.StudentMapper;
 import com.unfu.project.service.users.mapper.StudentUserMapper;
 import com.unfu.project.service.users.mapper.TeacherMapper;
-import com.unfu.project.service.users.payload.response.StudentResponse;
 import com.unfu.project.service.users.payload.response.StudentUserResponse;
 import com.unfu.project.service.users.payload.response.TeacherResponse;
 import lombok.AllArgsConstructor;
@@ -26,7 +20,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Nullable;
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -60,21 +53,13 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public SubjectWithParticipants getBySubjectId(Long subjectId) throws IOException {
-        Subject subject = subjectRepository.findByIdAndFetch(subjectId)
-                .orElseThrow(BadRequestException::new);
-        Set<SubjectSchedule> subjectSchedules = subject.getSubjectSchedules();
-        SubjectResponse subjectResponse = subjectMapper.map(subject);
-        List<TeacherResponse> teacherResponses = mapTeachers(subjectSchedules);
-        List<GroupWithStudents> groupWithStudents = mapGroups(subjectSchedules);
-        return SubjectWithParticipants.builder()
-                .subject(subjectResponse)
-                .teachers(teacherResponses)
-                .groups(groupWithStudents)
-                .build();
+    public SubjectResponse save(CreateSubjectRequest request) {
+        Subject subject = subjectMapper.map(request);
+        return subjectMapper.map(subjectRepository.save(subject));
     }
 
-    private List<GroupWithStudents> mapGroups(Set<SubjectSchedule> subjectSchedules) throws IOException {
+    private List<GroupWithStudents> mapGroups(Set<SubjectSchedule> subjectSchedules) {
+        if (subjectSchedules.isEmpty()) return Collections.emptyList();
         List<GroupWithStudents> result = new ArrayList<>();
         for (SubjectSchedule schedule : subjectSchedules) {
             if (schedule.getActive()) {
@@ -100,8 +85,8 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     private List<TeacherResponse> mapTeachers(Set<SubjectSchedule> subjectSchedules) {
+        if (subjectSchedules.isEmpty()) return Collections.emptyList();
         return subjectSchedules.stream()
-                .filter(Objects::nonNull)
                 .filter(SubjectSchedule::getActive)
                 .map(SubjectSchedule::getTeacher)
                 .map(teacherMapper::mapResponse)

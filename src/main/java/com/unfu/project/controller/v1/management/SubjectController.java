@@ -1,16 +1,14 @@
 package com.unfu.project.controller.v1.management;
 
 import com.unfu.project.service.managerment.SubjectService;
+import com.unfu.project.service.managerment.payload.request.CreateSubjectRequest;
 import com.unfu.project.service.util.PaginationUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/subjects")
@@ -25,9 +23,9 @@ public class SubjectController {
         return ResponseEntity.ok(PaginationUtil.valueOf(page));
     }
 
-    @GetMapping("/{id}/details")
-    public ResponseEntity<?> getDetails(@PathVariable("id") Long subjectId) throws IOException {
-        var response = subjectService.getBySubjectId(subjectId);
+    @PostMapping
+    public ResponseEntity<?> save(@Valid @RequestBody CreateSubjectRequest request) {
+        var response = subjectService.save(request);
         return ResponseEntity.ok(response);
     }
 }

@@ -1,6 +1,7 @@
 package com.unfu.project.domain.events;
 
 import com.unfu.project.domain.management.Group;
+import com.unfu.project.domain.management.SubGroup;
 import com.unfu.project.domain.management.Subject;
 import com.unfu.project.domain.users.Student;
 import com.unfu.project.domain.users.Teacher;
@@ -15,9 +16,7 @@ import java.util.Set;
 @Entity
 @Table(name = "event")
 @Data
-public class Event implements Serializable {
-
-    private static final long serialVersionUID = -2020155727722390748L;
+public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,4 +49,10 @@ public class Event implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "group_id"))
     @EqualsAndHashCode.Exclude
     private Set<Group> groups = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(name = "event_sub_group", joinColumns = @JoinColumn(name = "event_id"),
+            inverseJoinColumns = @JoinColumn(name = "sub_group_id"))
+    @EqualsAndHashCode.Exclude
+    private Set<SubGroup> subGroups = new HashSet<>();
 }

@@ -1,6 +1,7 @@
 package com.unfu.project.service.managerment.mapper;
 
 import com.unfu.project.domain.management.Subject;
+import com.unfu.project.service.managerment.payload.request.CreateSubjectRequest;
 import com.unfu.project.service.managerment.payload.response.SubjectResponse;
 import org.mapstruct.Mapper;
 
@@ -8,4 +9,6 @@ import org.mapstruct.Mapper;
 public interface SubjectMapper {
 
     SubjectResponse map(Subject subject);
+
+    Subject map(CreateSubjectRequest request);
 }

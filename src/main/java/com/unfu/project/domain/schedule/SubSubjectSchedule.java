@@ -1,7 +1,7 @@
 package com.unfu.project.domain.schedule;
 
-import com.unfu.project.domain.management.Group;
-import com.unfu.project.domain.management.Subject;
+import com.unfu.project.domain.management.SubGroup;
+import com.unfu.project.domain.management.SubSubject;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -15,14 +15,14 @@ import javax.persistence.ManyToOne;
 @Getter
 @Setter
 @ToString(callSuper = true)
-@DiscriminatorValue("SUBJECT")
-public class SubjectSchedule extends Schedule {
+@DiscriminatorValue("SUB_SUBJECT")
+public class SubSubjectSchedule extends Schedule {
 
     @ManyToOne
-    @JoinColumn(name = "group_id")
-    private Group group;
+    @JoinColumn(name = "sub_group_id")
+    private SubGroup subGroup;
 
     @ManyToOne
-    @JoinColumn(name = "subject_id")
-    private Subject subject;
+    @JoinColumn(name = "sub_subject_id")
+    private SubSubject subSubject;
 }
