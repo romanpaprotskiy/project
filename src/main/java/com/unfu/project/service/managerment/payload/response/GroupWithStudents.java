@@ -15,5 +15,7 @@ public final class GroupWithStudents {
 
     private String name;
 
+    private GoogleRecurrentEventResponse schedule;
+
     private List<StudentUserResponse> students;
 }

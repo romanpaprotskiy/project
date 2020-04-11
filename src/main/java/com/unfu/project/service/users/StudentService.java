@@ -1,17 +1,18 @@
 package com.unfu.project.service.users;
 
 import com.unfu.project.service.users.payload.request.CreateStudentRequest;
-import com.unfu.project.service.users.payload.response.StudentResponse;
+import com.unfu.project.service.users.payload.response.StudentDTO;
 import com.unfu.project.service.users.payload.response.StudentUserResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 public interface StudentService {
 
-    Optional<StudentResponse> findResponseByUserId(Long userId);
+    Optional<StudentDTO> findResponseByUserId(Long userId);
 
     Page<StudentUserResponse> findAll(Pageable pageable);
 
@@ -20,5 +21,7 @@ public interface StudentService {
      */
     Map<Long, Long> countOfStudentsByGroupIds();
 
-    StudentResponse createStudent(CreateStudentRequest request);
+    StudentDTO createStudent(CreateStudentRequest request);
+
+    Set<StudentDTO> getByGroupId(Long groupId);
 }

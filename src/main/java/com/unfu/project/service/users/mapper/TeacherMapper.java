@@ -2,7 +2,7 @@ package com.unfu.project.service.users.mapper;
 
 import com.unfu.project.domain.users.Teacher;
 import com.unfu.project.service.users.payload.response.PublicTeacherResponse;
-import com.unfu.project.service.users.payload.response.TeacherResponse;
+import com.unfu.project.service.users.payload.response.TeacherDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -26,7 +26,7 @@ public interface TeacherMapper {
     @Mapping(source = "user.email", target = "email")
     @Mapping(source = "user.phone", target = "phone")
     @Mapping(source = "user.birthDate", target = "birthDate")
-    TeacherResponse mapResponse(Teacher teacher);
+    TeacherDTO mapResponse(Teacher teacher);
 
     List<PublicTeacherResponse> map(Collection<Teacher> teachers);
 

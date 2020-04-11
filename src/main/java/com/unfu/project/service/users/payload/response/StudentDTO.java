@@ -7,11 +7,13 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-public class StudentResponse {
+public class StudentDTO {
 
     private Long id;
 
     private Long userId;
+
+    private String userEmail;
 
     private LocalDate dateOfEnroll;
 

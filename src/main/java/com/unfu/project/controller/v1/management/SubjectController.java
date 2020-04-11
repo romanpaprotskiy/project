@@ -23,6 +23,12 @@ public class SubjectController {
         return ResponseEntity.ok(PaginationUtil.valueOf(page));
     }
 
+    @GetMapping("/list")
+    public ResponseEntity<?> getAllList() {
+        var response = subjectService.findAll();
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping
     public ResponseEntity<?> save(@Valid @RequestBody CreateSubjectRequest request) {
         var response = subjectService.save(request);

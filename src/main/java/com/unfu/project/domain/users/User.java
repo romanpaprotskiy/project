@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -78,6 +79,13 @@ public class User implements Serializable, UserDetails {
         this.userId = user.getUserId();
         this.active = user.getActive();
         this.authorities = user.authorities;
+    }
+
+    public static User fromId(Long userId) {
+        if (Objects.isNull(userId)) return null;
+        User user = new User();
+        user.setId(userId);
+        return user;
     }
 
     public void addAuthority(Role role) {

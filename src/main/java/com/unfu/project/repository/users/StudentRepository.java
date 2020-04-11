@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface StudentRepository extends JpaRepository<Student, Long> {
@@ -17,4 +18,6 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     @Query("select new com.unfu.project.service.managerment.payload.GroupStudentsCount(g.id, count(s.id)) " +
             "from Student s join s.group g group by g.id")
     Collection<GroupStudentsCount> countStudentsByGroupIdIn();
+
+    Set<Student> findByGroupId(Long groupId);
 }

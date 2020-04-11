@@ -2,7 +2,6 @@ package com.unfu.project.controller.v1.users;
 
 import com.unfu.project.service.users.StudentService;
 import com.unfu.project.service.users.payload.request.CreateStudentRequest;
-import com.unfu.project.service.users.payload.response.StudentResponse;
 import com.unfu.project.service.util.PaginationUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;

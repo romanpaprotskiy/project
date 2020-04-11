@@ -19,7 +19,7 @@ abstract class Schedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "google_event_id")
     protected GoogleEvent googleEvent;
 
@@ -28,5 +28,5 @@ abstract class Schedule {
     protected Teacher teacher;
 
     @Column(name = "active")
-    protected Boolean active;
+    protected Boolean active = true;
 }

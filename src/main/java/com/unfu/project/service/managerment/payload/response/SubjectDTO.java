@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 @Data
 @Builder
-public class SubjectResponse {
+public class SubjectDTO {
 
     private Long id;
 

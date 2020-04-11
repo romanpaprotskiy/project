@@ -7,7 +7,7 @@ import com.unfu.project.service.users.StudentService;
 import com.unfu.project.service.users.mapper.StudentMapper;
 import com.unfu.project.service.users.mapper.StudentUserMapper;
 import com.unfu.project.service.users.payload.request.CreateStudentRequest;
-import com.unfu.project.service.users.payload.response.StudentResponse;
+import com.unfu.project.service.users.payload.response.StudentDTO;
 import com.unfu.project.service.users.payload.response.StudentUserResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -28,7 +28,7 @@ public class StudentServiceImpl implements StudentService {
     private final StudentUserMapper studentUserMapper;
 
     @Override
-    public Optional<StudentResponse> findResponseByUserId(Long userId) {
+    public Optional<StudentDTO> findResponseByUserId(Long userId) {
          return studentRepository.findByUserId(userId)
                 .map(studentMapper::map);
     }
@@ -50,8 +50,16 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public StudentResponse createStudent(CreateStudentRequest request) {
+    public StudentDTO createStudent(CreateStudentRequest request) {
         Student student = studentMapper.map(request);
         return studentMapper.map(studentRepository.save(student));
+    }
+
+    @Override
+    public Set<StudentDTO> getByGroupId(Long groupId) {
+        return studentRepository.findByGroupId(groupId)
+                .stream()
+                .map(studentMapper::map)
+                .collect(Collectors.toSet());
     }
 }

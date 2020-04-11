@@ -1,6 +1,6 @@
 package com.unfu.project.service.users.payload.response;
 
-import com.unfu.project.service.managerment.payload.response.SubjectResponse;
+import com.unfu.project.service.managerment.payload.response.SubjectDTO;
 import lombok.Builder;
 import lombok.Data;
 
@@ -12,7 +12,7 @@ public final class ProfileResponse {
 
     private final UserResponse user;
 
-    private final StudentResponse student;
+    private final StudentDTO student;
 
-    private final List<SubjectResponse> subjects;
+    private final List<SubjectDTO> subjects;
 }

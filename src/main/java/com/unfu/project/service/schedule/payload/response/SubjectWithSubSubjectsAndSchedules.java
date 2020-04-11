@@ -2,7 +2,7 @@ package com.unfu.project.service.schedule.payload.response;
 
 import com.unfu.project.service.events.payload.response.GoogleRecurrentEventResponse;
 import com.unfu.project.service.managerment.payload.response.GroupWithStudents;
-import com.unfu.project.service.users.payload.response.TeacherResponse;
+import com.unfu.project.service.users.payload.response.TeacherDTO;
 import lombok.Builder;
 import lombok.Data;
 
@@ -17,7 +17,7 @@ public final class SubjectWithSubSubjectsAndSchedules
 
     private final GroupWithStudents group;
 
-    private final TeacherResponse teacher;
+    private final TeacherDTO teacher;
 
     private final GoogleRecurrentEventResponse schedule;
 
