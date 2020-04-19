@@ -4,6 +4,7 @@ import com.unfu.project.service.events.enumeration.RecurrenceFrequency;
 import com.unfu.project.service.events.payload.GoogleDateTimeFormatter;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Objects;
 
 public final class RecurrenceRuleBuilder {
@@ -31,8 +32,8 @@ public final class RecurrenceRuleBuilder {
 
     public RecurrenceRuleBuilder until(LocalDate endDate) {
         if (Objects.nonNull(endDate)) {
-            String stringDate = GoogleDateTimeFormatter.format(endDate).toString();
-            rules.append("UNTIL=").append(stringDate).append(";");
+            String until = endDate.toString().replaceAll("-", "");
+            rules.append("UNTIL=").append(until).append(";");
         }
         return this;
     }

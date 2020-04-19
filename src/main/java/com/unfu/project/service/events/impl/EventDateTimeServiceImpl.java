@@ -21,7 +21,7 @@ public class EventDateTimeServiceImpl implements EventDateTimeService {
 
     @Override
     public EventDateTime fromLocalDate(LocalDate date) {
-        DateTime dateTime = GoogleDateTimeFormatter.format(date);
+        DateTime dateTime = GoogleDateTimeFormatter.format(date, TIMEZONE);
         return new EventDateTime()
                 .setDate(dateTime)
                 .setTimeZone(TIMEZONE);
@@ -29,7 +29,7 @@ public class EventDateTimeServiceImpl implements EventDateTimeService {
 
     @Override
     public EventDateTime fromLocalDateTime(LocalDateTime date) {
-        DateTime dateTime = GoogleDateTimeFormatter.format(date);
+        DateTime dateTime = GoogleDateTimeFormatter.format(date, TIMEZONE);
         return new EventDateTime()
                 .setDateTime(dateTime)
                 .setTimeZone(TIMEZONE);

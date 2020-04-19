@@ -13,15 +13,13 @@ import com.unfu.project.service.authentication.util.SecurityUtils;
 import com.unfu.project.service.events.EventBuilderService;
 import com.unfu.project.service.events.EventService;
 import com.unfu.project.service.events.payload.Recurrence;
-import com.unfu.project.service.events.payload.request.CreateRecurrentEvent;
+import com.unfu.project.service.events.payload.request.RecurrentEvent;
 import com.unfu.project.service.events.payload.response.GoogleRecurrentEventResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.util.List;
 
 @Service
@@ -51,20 +49,27 @@ public class EventServiceImpl implements EventService {
             Event event = calendar.events().get("primary", eventId).execute();
             EventDateTime start = event.getStart();
             EventDateTime end = event.getEnd();
-            LocalDateTime startDate = Instant.ofEpochMilli(start.getDateTime().getValue())
+            LocalDate startDate = Instant.ofEpochMilli(start.getDateTime().getValue())
                     .atZone(ZoneId.of(start.getTimeZone()))
-                    .toLocalDateTime();
-            LocalDateTime endDate = Instant.ofEpochMilli(end.getDateTime().getValue())
+                    .toLocalDate();
+            LocalTime startTime = Instant.ofEpochMilli(start.getDateTime().getValue())
+                    .atZone(ZoneId.of(start.getTimeZone()))
+                    .toLocalTime();
+            LocalTime endTime = Instant.ofEpochMilli(end.getDateTime().getValue())
                     .atZone(ZoneId.of(end.getTimeZone()))
-                    .toLocalDateTime();
-            return GoogleRecurrentEventResponse.builder().start(startDate).end(endDate).build();
+                    .toLocalTime();
+            return GoogleRecurrentEventResponse.builder()
+                    .startDate(startDate)
+                    .startTime(startTime)
+                    .endTime(endTime)
+                    .build();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public Event createRecurrentEvent(CreateRecurrentEvent eventRequest) throws IOException {
+    public Event createRecurrentEvent(RecurrentEvent eventRequest) throws IOException {
         Recurrence recurrence = getRecurrence(eventRequest);
         Event event = eventBuilderService
                 .summary(eventRequest.getSummary())
@@ -77,7 +82,30 @@ public class EventServiceImpl implements EventService {
         return calendar.events().insert("primary", event).execute();
     }
 
-    private Recurrence getRecurrence(CreateRecurrentEvent eventRequest) {
+    @Override
+    public Event updateRecurrentEvent(RecurrentEvent eventRequest) throws IOException {
+        Recurrence recurrence = getRecurrence(eventRequest);
+        Calendar calendar = getCalendar();
+        Event event = calendar.events().get("primary", eventRequest.getEventId()).execute();
+        Event newEvent = eventBuilderService
+                .summary(eventRequest.getSummary())
+                .recurrence(recurrence)
+                .attendees(eventRequest.getEmails())
+                .startDateTime(eventRequest.getStartDate())
+                .endDateTime(eventRequest.getEndDate())
+                .build();
+        return calendar.events().update("primary", event.getId(), newEvent).execute();
+    }
+
+    @Override
+    public Event cancelEvent(String eventId) throws IOException {
+        Calendar calendar = getCalendar();
+        Event event = calendar.events().get("primary", eventId).execute();
+        event.setStatus("cancelled");
+        return calendar.events().update("primary",eventId,event).execute();
+    }
+
+    private Recurrence getRecurrence(RecurrentEvent eventRequest) {
         return Recurrence.builder()
                 .frequency(eventRequest.getFrequency())
                 .count(eventRequest.getCount())

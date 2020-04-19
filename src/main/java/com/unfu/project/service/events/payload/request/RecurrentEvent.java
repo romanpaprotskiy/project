@@ -10,7 +10,9 @@ import java.util.List;
 
 @Getter
 @Builder
-public final class CreateRecurrentEvent {
+public final class RecurrentEvent {
+
+    private final String eventId;
 
     private final String summary;
 

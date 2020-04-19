@@ -8,5 +8,5 @@ import java.util.Collection;
 @Repository
 public interface SubjectScheduleRepository extends ScheduleRepository<SubjectSchedule> {
 
-    Collection<SubjectSchedule> findAllBySubjectId(Long subjectId);
+    Collection<SubjectSchedule> findAllBySubjectIdAndActive(Long subjectId, Boolean active);
 }

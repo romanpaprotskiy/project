@@ -14,7 +14,7 @@ import java.time.LocalTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public final class CreateScheduleRequest {
+public final class ScheduleCreateRequest {
 
     @NotNull
     private Long teacherId;

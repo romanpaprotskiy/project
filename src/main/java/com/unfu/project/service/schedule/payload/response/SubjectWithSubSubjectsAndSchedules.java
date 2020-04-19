@@ -11,13 +11,17 @@ import java.util.Comparator;
 @Data
 @Builder
 public final class SubjectWithSubSubjectsAndSchedules
-        implements Comparable<SubjectWithSubSubjectsAndSchedules>{
+        implements Comparable<SubjectWithSubSubjectsAndSchedules> {
+
+    private final Long subjectId;
 
     private final Long scheduleId;
 
     private final GroupWithStudents group;
 
     private final TeacherDTO teacher;
+
+    private final String eventId;
 
     private final GoogleRecurrentEventResponse schedule;
 

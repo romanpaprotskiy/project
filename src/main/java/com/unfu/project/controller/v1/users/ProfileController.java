@@ -25,7 +25,7 @@ public class ProfileController {
     @PreAuthorize("hasAnyAuthority('GUEST','STUDENT','TEACHER', 'ADMIN')")
     public ResponseEntity<ProfileResponse> getCurrentUserProfile() {
 
-        ProfileResponse profile = profileService.getCurrentUserProfile();
+        var profile = profileService.getCurrentUserProfile();
         return ResponseEntity.ok(profile);
     }
 
@@ -33,7 +33,7 @@ public class ProfileController {
     @PreAuthorize("hasAnyAuthority('GUEST','STUDENT','TEACHER', 'ADMIN')")
     public ResponseEntity<UserResponse> getCurrentUserProfile(@Valid @RequestBody EditProfileRequest request) {
 
-        UserResponse userResponse = userService.editCurrentUser(request);
+        var userResponse = userService.editCurrentUser(request);
         return ResponseEntity.ok(userResponse);
     }
 

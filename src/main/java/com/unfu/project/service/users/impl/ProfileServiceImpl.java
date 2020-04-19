@@ -26,9 +26,9 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public ProfileResponse getCurrentUserProfile() {
-        UserResponse userResponse = userService.findCurrentUserResponse();
+        var userResponse = userService.findCurrentUserResponse();
         Optional<StudentDTO> student = studentService.findResponseByUserId(userResponse.getId());
-        List<SubjectDTO> subjects = subjectService
+        var subjects = subjectService
                 .getStudentSubjectsByStudentId(student.orElse(new StudentDTO()).getId());
         return ProfileResponse.builder()
                 .user(userResponse)
