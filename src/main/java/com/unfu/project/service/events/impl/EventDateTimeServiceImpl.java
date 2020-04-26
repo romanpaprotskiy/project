@@ -7,8 +7,10 @@ import com.unfu.project.service.events.payload.GoogleDateTimeFormatter;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Service
 public class EventDateTimeServiceImpl implements EventDateTimeService {
@@ -33,5 +35,12 @@ public class EventDateTimeServiceImpl implements EventDateTimeService {
         return new EventDateTime()
                 .setDateTime(dateTime)
                 .setTimeZone(TIMEZONE);
+    }
+
+    @Override
+    public LocalDateTime fromEventDateTime(EventDateTime eventDateTime) {
+        DateTime dateTime = eventDateTime.getDateTime();
+        long value = dateTime.getValue();
+        return LocalDateTime.ofInstant(Instant.ofEpochMilli(value), ZoneId.of(eventDateTime.getTimeZone()));
     }
 }

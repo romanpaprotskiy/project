@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/v1/profile")
@@ -23,7 +24,7 @@ public class ProfileController {
 
     @GetMapping("/current")
     @PreAuthorize("hasAnyAuthority('GUEST','STUDENT','TEACHER', 'ADMIN')")
-    public ResponseEntity<ProfileResponse> getCurrentUserProfile() {
+    public ResponseEntity<ProfileResponse> getCurrentUserProfile() throws IOException {
 
         var profile = profileService.getCurrentUserProfile();
         return ResponseEntity.ok(profile);

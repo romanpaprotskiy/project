@@ -5,6 +5,7 @@ import com.unfu.project.service.events.payload.request.RecurrentEvent;
 import com.unfu.project.service.events.payload.response.GoogleRecurrentEventResponse;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface EventService {
@@ -18,4 +19,6 @@ public interface EventService {
     Event updateRecurrentEvent(RecurrentEvent eventRequest) throws IOException;
 
     Event cancelEvent(String eventId) throws IOException;
+
+    List<Event> getEventsByEmailAndDateIn(String email, LocalDate start, LocalDate end) throws IOException;
 }

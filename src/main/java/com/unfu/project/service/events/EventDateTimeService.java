@@ -10,4 +10,6 @@ public interface EventDateTimeService {
     EventDateTime fromLocalDate(LocalDate date);
 
     EventDateTime fromLocalDateTime(LocalDateTime date);
+
+    LocalDateTime fromEventDateTime(EventDateTime eventDateTime);
 }
