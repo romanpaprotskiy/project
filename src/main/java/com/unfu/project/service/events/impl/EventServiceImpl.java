@@ -118,6 +118,19 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    public List<Event> getEventsByStartEndDate(LocalDate start, LocalDate end, boolean isSingle) throws IOException {
+        Calendar calendar = getCalendar();
+        DateTime timeMin = GoogleDateTimeFormatter.format(start, TIMEZONE);
+        DateTime timeMax = GoogleDateTimeFormatter.format(end, TIMEZONE);
+        Events events = calendar.events().list("primary")
+                .setTimeMin(timeMin)
+                .setTimeMax(timeMax)
+                .setSingleEvents(isSingle)
+                .execute();
+        return events.getItems();
+    }
+
+    @Override
     public List<Event> getEventsByEmailAndDateIn(String email, LocalDate start, LocalDate end) throws IOException {
         Calendar calendar = getCalendar();
         DateTime timeMin = GoogleDateTimeFormatter.format(start, TIMEZONE);

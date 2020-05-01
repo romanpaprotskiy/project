@@ -20,5 +20,7 @@ public interface EventService {
 
     Event cancelEvent(String eventId) throws IOException;
 
+    List<Event> getEventsByStartEndDate(LocalDate start, LocalDate end, boolean isSingle) throws IOException;
+
     List<Event> getEventsByEmailAndDateIn(String email, LocalDate start, LocalDate end) throws IOException;
 }

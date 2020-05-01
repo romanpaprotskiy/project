@@ -1,6 +1,7 @@
 package com.unfu.project.service.schedule.impl;
 
 import com.google.api.services.calendar.model.Event;
+import com.unfu.project.domain.events.GoogleEvent;
 import com.unfu.project.domain.schedule.SubjectSchedule;
 import com.unfu.project.exception.ResourceNotFoundException;
 import com.unfu.project.repository.schedule.SubjectScheduleRepository;
@@ -14,6 +15,7 @@ import com.unfu.project.service.schedule.mapper.ScheduleMapper;
 import com.unfu.project.service.schedule.payload.request.ScheduleCreateRequest;
 import com.unfu.project.service.schedule.payload.request.ScheduleRestrictionRequest;
 import com.unfu.project.service.schedule.payload.request.ScheduleUpdateRequest;
+import com.unfu.project.service.schedule.payload.response.SubjectEventDTO;
 import com.unfu.project.service.schedule.payload.response.SubjectWithSubSubjectsAndSchedules;
 import com.unfu.project.service.users.mapper.TeacherMapper;
 import lombok.AllArgsConstructor;
@@ -21,8 +23,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.List;
+import java.time.*;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,6 +50,48 @@ public class SubjectScheduleServiceImpl implements SubjectScheduleService {
                 .map(this::fromSubjectSchedule)
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<SubjectEventDTO> getAllByCurrentMonth() throws IOException {
+        LocalDate now = LocalDate.now();
+        int end = now.getMonth().length(Year.isLeap(now.getYear()));
+        List<Event> events = eventService.getEventsByStartEndDate(LocalDate.of(now.getYear(), now.getMonth(), 1),
+                LocalDate.of(now.getYear(), now.getMonth(), end), true);
+        List<SubjectSchedule> schedules = subjectScheduleRepository.findAll();
+        return map(schedules, events);
+    }
+
+    private List<SubjectEventDTO> map(List<SubjectSchedule> schedules, List<Event> events) {
+        schedules.sort(Comparator.comparing(e -> e.getGoogleEvent().getEventId()));
+        List<SubjectEventDTO> result = new ArrayList<>();
+        for (Event event : events) {
+            String recurringEventId = event.getRecurringEventId();
+            SubjectSchedule schedule = find(recurringEventId, schedules);
+            SubjectEventDTO dto = SubjectEventDTO.builder()
+                    .startDateTime(Instant.ofEpochMilli(event.getStart().getDateTime().getValue())
+                            .atZone(ZoneId.of(event.getStart().getTimeZone())).toLocalDateTime())
+                    .endDateTime(Instant.ofEpochMilli(event.getEnd().getDateTime().getValue())
+                            .atZone(ZoneId.of(event.getEnd().getTimeZone())).toLocalDateTime())
+                    .subjectId(schedule.getSubject().getId())
+                    .subjectName(schedule.getSubject().getName())
+                    .groupId(schedule.getGroup().getId())
+                    .groupName(schedule.getGroup().getName())
+                    .build();
+            result.add(dto);
+        }
+        return result;
+    }
+
+    private SubjectSchedule find(String eventId, List<SubjectSchedule> schedules) {
+        GoogleEvent googleEvent = new GoogleEvent();
+        googleEvent.setEventId(eventId);
+        SubjectSchedule subjectSchedule = new SubjectSchedule();
+        subjectSchedule.setGoogleEvent(googleEvent);
+        int index = Collections.binarySearch(schedules, subjectSchedule,
+                Comparator.comparing(e -> e.getGoogleEvent().getEventId()));
+        if (index > -1) return schedules.get(index);
+        return null;
     }
 
     private SubjectWithSubSubjectsAndSchedules fromSubjectSchedule(SubjectSchedule subjectSchedule) {

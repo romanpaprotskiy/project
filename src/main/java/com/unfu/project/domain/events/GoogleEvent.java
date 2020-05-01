@@ -23,7 +23,7 @@ public class GoogleEvent implements Serializable {
     private User creator;
 
     @Column(name = "created_at")
-    private Instant createdAt;
+    private Instant createdAt = Instant.now();
 
     @Column(name = "event_id", unique = true)
     private String eventId;
