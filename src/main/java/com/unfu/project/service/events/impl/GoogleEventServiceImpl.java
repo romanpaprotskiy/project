@@ -13,12 +13,11 @@ import com.google.api.services.calendar.model.Events;
 import com.unfu.project.service.authentication.data.GoogleDataStore;
 import com.unfu.project.service.authentication.util.SecurityUtils;
 import com.unfu.project.service.events.EventBuilderService;
-import com.unfu.project.service.events.EventService;
+import com.unfu.project.service.events.GoogleEventService;
 import com.unfu.project.service.events.payload.GoogleDateTimeFormatter;
 import com.unfu.project.service.events.payload.Recurrence;
 import com.unfu.project.service.events.payload.request.RecurrentEvent;
 import com.unfu.project.service.events.payload.response.GoogleRecurrentEventResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +27,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class EventServiceImpl implements EventService {
+public class GoogleEventServiceImpl implements GoogleEventService {
 
     private final GoogleDataStore googleDataStore;
 
@@ -41,7 +40,7 @@ public class EventServiceImpl implements EventService {
     @Value("${date-time.timezone}")
     private String TIMEZONE;
 
-    public EventServiceImpl(GoogleDataStore googleDataStore, EventBuilderService eventBuilderService) {
+    public GoogleEventServiceImpl(GoogleDataStore googleDataStore, EventBuilderService eventBuilderService) {
         this.googleDataStore = googleDataStore;
         this.eventBuilderService = eventBuilderService;
     }

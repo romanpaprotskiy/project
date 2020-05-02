@@ -3,13 +3,11 @@ package com.unfu.project.domain.events;
 import com.unfu.project.domain.management.Group;
 import com.unfu.project.domain.management.SubGroup;
 import com.unfu.project.domain.management.Subject;
-import com.unfu.project.domain.users.Student;
-import com.unfu.project.domain.users.Teacher;
+import com.unfu.project.domain.users.User;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,33 +24,25 @@ public class Event {
     @JoinColumn(name = "google_event")
     private GoogleEvent googleEvent;
 
-    @ManyToMany
-    @JoinTable(name = "event_subject", joinColumns = @JoinColumn(name = "event_id"),
-            inverseJoinColumns = @JoinColumn(name = "subject_id"))
-    @EqualsAndHashCode.Exclude
-    private Set<Subject> subjects = new HashSet<>();
+    @Column(name = "target_type")
+    @Enumerated(EnumType.STRING)
+    private TargetType targetType;
 
     @ManyToMany
-    @JoinTable(name = "event_student", joinColumns = @JoinColumn(name = "event_id"),
-            inverseJoinColumns = @JoinColumn(name = "student_id"))
+    @JoinTable(name = "event_user", joinColumns = @JoinColumn(name = "event_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
     @EqualsAndHashCode.Exclude
-    private Set<Student> students = new HashSet<>();
+    private Set<User> users = new HashSet<>();
 
-    @ManyToMany
-    @JoinTable(name = "event_teacher", joinColumns = @JoinColumn(name = "event_id"),
-            inverseJoinColumns = @JoinColumn(name = "teacher_id"))
-    @EqualsAndHashCode.Exclude
-    private Set<Teacher> teachers = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "subject_id")
+    private Subject subject;
 
-    @ManyToMany
-    @JoinTable(name = "event_group", joinColumns = @JoinColumn(name = "event_id"),
-            inverseJoinColumns = @JoinColumn(name = "group_id"))
-    @EqualsAndHashCode.Exclude
-    private Set<Group> groups = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "group_id")
+    private Group group;
 
-    @ManyToMany
-    @JoinTable(name = "event_sub_group", joinColumns = @JoinColumn(name = "event_id"),
-            inverseJoinColumns = @JoinColumn(name = "sub_group_id"))
-    @EqualsAndHashCode.Exclude
-    private Set<SubGroup> subGroups = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "sub_group_id")
+    private SubGroup subGroup;
 }

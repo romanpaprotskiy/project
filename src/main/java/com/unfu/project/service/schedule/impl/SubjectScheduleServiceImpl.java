@@ -5,7 +5,7 @@ import com.unfu.project.domain.events.GoogleEvent;
 import com.unfu.project.domain.schedule.SubjectSchedule;
 import com.unfu.project.exception.ResourceNotFoundException;
 import com.unfu.project.repository.schedule.SubjectScheduleRepository;
-import com.unfu.project.service.events.EventService;
+import com.unfu.project.service.events.GoogleEventService;
 import com.unfu.project.service.events.enumeration.RecurrenceFrequency;
 import com.unfu.project.service.events.payload.request.RecurrentEvent;
 import com.unfu.project.service.managerment.mapper.GroupMapper;
@@ -37,7 +37,7 @@ public class SubjectScheduleServiceImpl implements SubjectScheduleService {
 
     private final TeacherMapper teacherMapper;
 
-    private final EventService eventService;
+    private final GoogleEventService googleEventService;
 
     private final ScheduleMapper scheduleMapper;
 
@@ -56,7 +56,7 @@ public class SubjectScheduleServiceImpl implements SubjectScheduleService {
     public List<SubjectEventDTO> getAllByCurrentMonth() throws IOException {
         LocalDate now = LocalDate.now();
         int end = now.getMonth().length(Year.isLeap(now.getYear()));
-        List<Event> events = eventService.getEventsByStartEndDate(LocalDate.of(now.getYear(), now.getMonth(), 1),
+        List<Event> events = googleEventService.getEventsByStartEndDate(LocalDate.of(now.getYear(), now.getMonth(), 1),
                 LocalDate.of(now.getYear(), now.getMonth(), end), true);
         List<SubjectSchedule> schedules = subjectScheduleRepository.findAll();
         return map(schedules, events);
@@ -100,7 +100,7 @@ public class SubjectScheduleServiceImpl implements SubjectScheduleService {
                 .subjectId(subjectSchedule.getSubject().getId())
                 .group(groupMapper.mapWithStudents(subjectSchedule.getGroup()))
                 .teacher(teacherMapper.mapResponse(subjectSchedule.getTeacher()))
-                .schedule(eventService.getRecurrentEventByEventId(subjectSchedule.getGoogleEvent().getEventId()))
+                .schedule(googleEventService.getRecurrentEventByEventId(subjectSchedule.getGoogleEvent().getEventId()))
                 .eventId(subjectSchedule.getGoogleEvent().getEventId())
                 .build();
     }
@@ -119,7 +119,7 @@ public class SubjectScheduleServiceImpl implements SubjectScheduleService {
                 .emails(emails);
         setRestriction(builder, request.getRestriction());
         RecurrentEvent createRecurrentEvent = builder.build();
-        Event recurrentEvent = eventService.createRecurrentEvent(createRecurrentEvent);
+        Event recurrentEvent = googleEventService.createRecurrentEvent(createRecurrentEvent);
         SubjectSchedule subjectSchedule = scheduleMapper.mapFromRequest(request, recurrentEvent);
         return fromSubjectSchedule(subjectScheduleRepository.saveAndFlush(subjectSchedule));
     }
@@ -138,7 +138,7 @@ public class SubjectScheduleServiceImpl implements SubjectScheduleService {
                 .summary(scheduleDetailsService.getSubjectName(request.getSubjectId()));
         setRestriction(builder, request.getRestriction());
         RecurrentEvent recurrentEvent = builder.build();
-        Event event = eventService.updateRecurrentEvent(recurrentEvent);
+        Event event = googleEventService.updateRecurrentEvent(recurrentEvent);
         SubjectSchedule subjectSchedule = scheduleMapper.mapFromRequest(request, event, request.getGoogleEventId());
         return fromSubjectSchedule(subjectScheduleRepository.saveAndFlush(subjectSchedule));
     }
@@ -160,7 +160,7 @@ public class SubjectScheduleServiceImpl implements SubjectScheduleService {
         SubjectSchedule subjectSchedule = subjectScheduleRepository.findById(subjectScheduleId)
                 .orElseThrow(ResourceNotFoundException::new);
         subjectSchedule.setActive(false);
-        eventService.cancelEvent(subjectSchedule.getGoogleEvent().getEventId());
+        googleEventService.cancelEvent(subjectSchedule.getGoogleEvent().getEventId());
         return fromSubjectSchedule(subjectScheduleRepository.saveAndFlush(subjectSchedule));
     }
 }
