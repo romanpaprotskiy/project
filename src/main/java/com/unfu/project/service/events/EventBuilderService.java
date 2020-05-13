@@ -2,12 +2,14 @@ package com.unfu.project.service.events;
 
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventAttendee;
+import com.google.api.services.calendar.model.EventReminder;
 import com.unfu.project.service.events.builder.RecurrenceRuleBuilder;
 import com.unfu.project.service.events.payload.Recurrence;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -62,6 +64,18 @@ public final class EventBuilderService {
                 .until(recurrence.getEndDate())
                 .build();
         event.setRecurrence(List.of(recurrenceRule));
+        return this;
+    }
+
+    public EventBuilderService reminders() {
+        EventReminder[] reminderOverrides = new EventReminder[] {
+                new EventReminder().setMethod("email").setMinutes(24 * 60),
+                new EventReminder().setMethod("popup").setMinutes(10),
+        };
+        Event.Reminders reminders = new Event.Reminders()
+                .setUseDefault(false)
+                .setOverrides(Arrays.asList(reminderOverrides));
+        event.setReminders(reminders);
         return this;
     }
 

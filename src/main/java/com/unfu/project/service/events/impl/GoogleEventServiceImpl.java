@@ -88,9 +88,12 @@ public class GoogleEventServiceImpl implements GoogleEventService {
                 .attendees(eventRequest.getEmails())
                 .startDateTime(eventRequest.getStartDate())
                 .endDateTime(eventRequest.getEndDate())
+                .reminders()
                 .build();
         Calendar calendar = getCalendar();
-        return calendar.events().insert("primary", event).execute();
+        return calendar.events().insert("primary", event)
+                .setSendNotifications(true)
+                .execute();
     }
 
     @Override
@@ -104,8 +107,11 @@ public class GoogleEventServiceImpl implements GoogleEventService {
                 .attendees(eventRequest.getEmails())
                 .startDateTime(eventRequest.getStartDate())
                 .endDateTime(eventRequest.getEndDate())
+                .reminders()
                 .build();
-        return calendar.events().update("primary", event.getId(), newEvent).execute();
+        return calendar.events().update("primary", event.getId(), newEvent)
+                .setSendNotifications(true)
+                .execute();
     }
 
     @Override
@@ -113,7 +119,9 @@ public class GoogleEventServiceImpl implements GoogleEventService {
         Calendar calendar = getCalendar();
         Event event = calendar.events().get("primary", eventId).execute();
         event.setStatus("cancelled");
-        return calendar.events().update("primary",eventId,event).execute();
+        return calendar.events().update("primary",eventId,event)
+                .setSendNotifications(true)
+                .execute();
     }
 
     @Override

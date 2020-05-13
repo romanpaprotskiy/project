@@ -10,9 +10,7 @@ import java.time.Instant;
 @Entity
 @Table(name = "google_event")
 @Data
-public class GoogleEvent implements Serializable {
-
-    private static final long serialVersionUID = 7466651570144606590L;
+public class GoogleEvent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
