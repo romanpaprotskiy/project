@@ -6,7 +6,7 @@ import lombok.Getter;
 public enum RecurrenceFrequency {
     DAILY("FREQ=DAILY;"),
     WEEKLY("FREQ=WEEKLY;"),
-    MONTHLY("FREQ=WEEKLY;");
+    MONTHLY("FREQ=MONTHLY;");
 
     private final String freq;
 

@@ -15,4 +15,8 @@ public interface UserService {
     UserResponse editCurrentUser(EditProfileRequest request);
 
     List<PublicUserResponse> findAllActive();
+
+    List<PublicUserResponse> findTeachersUsers();
+
+    List<PublicUserResponse> findStudentsUser();
 }

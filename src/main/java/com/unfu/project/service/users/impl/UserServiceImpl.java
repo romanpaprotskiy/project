@@ -44,4 +44,20 @@ public class UserServiceImpl implements UserService {
                 .map(userMapper::mapToPublic)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<PublicUserResponse> findTeachersUsers() {
+        return userRepository.findAllIsTeacher()
+                .stream()
+                .map(userMapper::mapToPublic)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PublicUserResponse> findStudentsUser() {
+        return userRepository.findAllIsStudent()
+                .stream()
+                .map(userMapper::mapToPublic)
+                .collect(Collectors.toList());
+    }
 }

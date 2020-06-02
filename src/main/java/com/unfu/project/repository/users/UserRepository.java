@@ -24,4 +24,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "and (u.id not in (select t.user.id from Teacher t)) " +
             "and u.active = ?1")
     Collection<User> findAllByActive(boolean active);
+
+    @Query("select t.user from Teacher t where t.user is not null")
+    List<User> findAllIsTeacher();
+
+    @Query("select s.user from Student s where s.user is not null")
+    List<User> findAllIsStudent();
 }

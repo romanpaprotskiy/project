@@ -21,9 +21,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-public class User implements Serializable, UserDetails {
-
-    private static final long serialVersionUID = -442253584073640320L;
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
