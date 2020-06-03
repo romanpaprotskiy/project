@@ -16,6 +16,8 @@ public interface UserService {
 
     List<PublicUserResponse> findAllActive();
 
+    List<PublicUserResponse> findAll(String search);
+
     List<PublicUserResponse> findTeachersUsers();
 
     List<PublicUserResponse> findStudentsUser();

@@ -12,6 +12,7 @@ import com.unfu.project.service.users.payload.response.UserResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,6 +42,17 @@ public class UserServiceImpl implements UserService {
     public List<PublicUserResponse> findAllActive() {
         return userRepository.findAllByActive(true)
                 .stream()
+                .map(userMapper::mapToPublic)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PublicUserResponse> findAll(String search) {
+        List<User> users;
+        if (search != null && !search.isEmpty())
+            users = userRepository.findAll(search);
+        else users = userRepository.findAll();
+        return users.stream()
                 .map(userMapper::mapToPublic)
                 .collect(Collectors.toList());
     }

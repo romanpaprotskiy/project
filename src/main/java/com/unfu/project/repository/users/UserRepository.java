@@ -25,6 +25,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "and u.active = ?1")
     Collection<User> findAllByActive(boolean active);
 
+    @Query("select u from User u where u.firstName like concat(?1, '%') or u.lastName like concat(?1, '%')")
+    List<User> findAll(String search);
+
     @Query("select t.user from Teacher t where t.user is not null")
     List<User> findAllIsTeacher();
 
