@@ -1,6 +1,7 @@
 package com.unfu.project.service.events;
 
 import com.google.api.services.calendar.model.Event;
+import com.unfu.project.service.events.payload.request.EventWithAttendeesRequest;
 import com.unfu.project.service.events.payload.request.RecurrentEvent;
 import com.unfu.project.service.events.payload.response.GoogleRecurrentEventResponse;
 
@@ -17,6 +18,8 @@ public interface GoogleEventService {
     Event createRecurrentEvent(RecurrentEvent eventRequest) throws IOException;
 
     Event updateRecurrentEvent(RecurrentEvent eventRequest) throws IOException;
+
+    Event createSingleEvent(EventWithAttendeesRequest request) throws IOException;
 
     Event cancelEvent(String eventId) throws IOException;
 

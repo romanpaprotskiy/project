@@ -74,7 +74,7 @@ public final class EventBuilderService {
         };
         Event.Reminders reminders = new Event.Reminders()
                 .setUseDefault(false)
-                .setOverrides(Arrays.asList(reminderOverrides));
+                .setOverrides(List.of(reminderOverrides));
         event.setReminders(reminders);
         return this;
     }

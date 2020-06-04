@@ -16,6 +16,7 @@ import com.unfu.project.service.events.EventBuilderService;
 import com.unfu.project.service.events.GoogleEventService;
 import com.unfu.project.service.events.payload.GoogleDateTimeFormatter;
 import com.unfu.project.service.events.payload.Recurrence;
+import com.unfu.project.service.events.payload.request.EventWithAttendeesRequest;
 import com.unfu.project.service.events.payload.request.RecurrentEvent;
 import com.unfu.project.service.events.payload.response.GoogleRecurrentEventResponse;
 import org.springframework.beans.factory.annotation.Value;
@@ -110,6 +111,22 @@ public class GoogleEventServiceImpl implements GoogleEventService {
                 .reminders()
                 .build();
         return calendar.events().update("primary", event.getId(), newEvent)
+                .setSendNotifications(true)
+                .execute();
+    }
+
+    @Override
+    public Event createSingleEvent(EventWithAttendeesRequest request) throws IOException {
+        Event event = eventBuilderService
+                .summary(request.getTitle())
+                .attendees(request.getAttendees())
+                .startDateTime(LocalDateTime.of(request.getDate(), request.getStartTime()))
+                .endDateTime(LocalDateTime.of(request.getDate(), request.getEndTime()))
+                .location(request.getLocation())
+                .reminders()
+                .build();
+        Calendar calendar = getCalendar();
+        return calendar.events().insert("primary", event)
                 .setSendNotifications(true)
                 .execute();
     }

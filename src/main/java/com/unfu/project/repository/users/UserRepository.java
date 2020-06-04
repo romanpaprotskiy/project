@@ -19,6 +19,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = "select u from User u where u.email = ?#{principal?.username}")
     User findCurrent();
 
+    List<User> findAllByEmailIn(Collection<String> emails);
+
     @Query(value = "select u from User u where (u.id not in " +
             "(select s.user.id from Student s)) " +
             "and (u.id not in (select t.user.id from Teacher t)) " +
