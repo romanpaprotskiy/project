@@ -2,11 +2,11 @@ package com.unfu.project.controller.v1.events;
 
 import com.unfu.project.service.events.EventService;
 import com.unfu.project.service.events.payload.request.EventWithAttendeesRequest;
-import com.unfu.project.service.events.payload.response.EventWithAttendees;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.io.IOException;
 
 @RestController
@@ -23,8 +23,14 @@ public class EventController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody EventWithAttendeesRequest request) throws IOException {
+    public ResponseEntity<?> create(@Valid @RequestBody EventWithAttendeesRequest request) throws IOException {
         var event = eventService.create(request);
+        return ResponseEntity.ok(event);
+    }
+
+    @DeleteMapping("/{eventId}")
+    public ResponseEntity<?> delete(@PathVariable String eventId) throws IOException {
+        var event = eventService.delete(eventId);
         return ResponseEntity.ok(event);
     }
 }

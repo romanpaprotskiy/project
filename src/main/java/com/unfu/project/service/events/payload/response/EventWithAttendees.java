@@ -12,6 +12,8 @@ import java.util.List;
 @Builder
 public class EventWithAttendees {
 
+    private String eventId;
+
     private final String title;
 
     private final LocalDateTime startDate;

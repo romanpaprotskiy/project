@@ -59,6 +59,13 @@ public class EventServiceImpl implements EventService {
                 .location(event.getLocation())
                 .title(event.getSummary())
                 .attendees(userService.findAllByEmails(emails))
+                .eventId(event.getId())
                 .build();
+    }
+
+    @Override
+    public EventWithAttendees delete(String eventId) throws IOException {
+        Event event = googleEventService.cancelEvent(eventId);
+        return valueOf(event);
     }
 }

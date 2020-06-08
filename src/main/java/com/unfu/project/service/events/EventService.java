@@ -14,4 +14,6 @@ public interface EventService {
     EventWithAttendees create(EventWithAttendeesRequest request) throws IOException;
 
     EventWithAttendees valueOf(Event event);
+
+    EventWithAttendees delete(String eventId) throws IOException;
 }
