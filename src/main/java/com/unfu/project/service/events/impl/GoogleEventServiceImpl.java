@@ -125,6 +125,7 @@ public class GoogleEventServiceImpl implements GoogleEventService {
                 .location(request.getLocation())
                 .reminders()
                 .build();
+        event.setRecurrence(null);
         Calendar calendar = getCalendar();
         return calendar.events().insert("primary", event)
                 .setSendNotifications(true)
